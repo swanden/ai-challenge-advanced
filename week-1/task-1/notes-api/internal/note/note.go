@@ -84,6 +84,28 @@ func (s *Service) Get(ctx context.Context, id string) (Note, error) {
 	return s.repo.Get(ctx, id)
 }
 
+// Update частично обновляет текст заметки: проверяет ввод, подтягивает
+// существующую заметку, меняет текст и метку UpdatedAt (CreatedAt сохраняется)
+// и возвращает обновлённую заметку. Нет такой заметки — ErrNotFound.
+func (s *Service) Update(ctx context.Context, id, text string) (Note, error) {
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return Note{}, ErrEmptyText
+	}
+
+	n, err := s.repo.Get(ctx, id)
+	if err != nil {
+		return Note{}, err
+	}
+
+	n.Text = text
+	n.UpdatedAt = s.clock.Now()
+	if err := s.repo.Update(ctx, n); err != nil {
+		return Note{}, err
+	}
+	return n, nil
+}
+
 // List возвращает все заметки. Порядок определяется хранилищем.
 func (s *Service) List(ctx context.Context) ([]Note, error) {
 	return s.repo.List(ctx)

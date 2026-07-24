@@ -28,6 +28,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
 	h.mux.HandleFunc("POST /notes", h.create)
 	h.mux.HandleFunc("GET /notes", h.list)
 	h.mux.HandleFunc("GET /notes/{id}", h.get)
+	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
 	return h
 }
 
@@ -69,6 +70,34 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to get note")
+		return
+	}
+	h.writeJSON(w, r.Context(), http.StatusOK, n)
+}
+
+// updateRequest — тело запроса на частичное обновление заметки.
+type updateRequest struct {
+	Text string `json:"text"`
+}
+
+func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
+	var req updateRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+		return
+	}
+
+	n, err := h.svc.Update(r.Context(), r.PathValue("id"), req.Text)
+	if err != nil {
+		if errors.Is(err, note.ErrNotFound) {
+			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
+			return
+		}
+		if errors.Is(err, note.ErrEmptyText) {
+			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
+			return
+		}
+		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to update note")
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, n)

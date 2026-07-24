@@ -1,0 +1,132 @@
+diff --git a/week-1/task-1/notes-api/internal/httpapi/handler.go b/week-1/task-1/notes-api/internal/httpapi/handler.go
+index cbe3335..daac932 100644
+--- a/week-1/task-1/notes-api/internal/httpapi/handler.go
++++ b/week-1/task-1/notes-api/internal/httpapi/handler.go
+@@ -28,6 +28,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
+ 	h.mux.HandleFunc("POST /notes", h.create)
+ 	h.mux.HandleFunc("GET /notes", h.list)
+ 	h.mux.HandleFunc("GET /notes/{id}", h.get)
++	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
+ 	return h
+ }
+ 
+@@ -74,6 +75,33 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
+ 	h.writeJSON(w, r.Context(), http.StatusOK, n)
+ }
+ 
++// updateRequest — тело запроса на частичное обновление заметки.
++type updateRequest struct {
++	Text string `json:"text"`
++}
++
++func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
++	var req updateRequest
++	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
++		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
++		return
++	}
++
++	n, err := h.svc.Update(r.Context(), r.PathValue("id"), req.Text)
++	if err != nil {
++		switch {
++		case errors.Is(err, note.ErrEmptyText):
++			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
++		case errors.Is(err, note.ErrNotFound):
++			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
++		default:
++			h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to update note")
++		}
++		return
++	}
++	h.writeJSON(w, r.Context(), http.StatusOK, n)
++}
++
+ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
+ 	notes, err := h.svc.List(r.Context())
+ 	if err != nil {
+diff --git a/week-1/task-1/notes-api/internal/note/note.go b/week-1/task-1/notes-api/internal/note/note.go
+index f6e24e0..4410f22 100644
+--- a/week-1/task-1/notes-api/internal/note/note.go
++++ b/week-1/task-1/notes-api/internal/note/note.go
+@@ -84,6 +84,27 @@ func (s *Service) Get(ctx context.Context, id string) (Note, error) {
+ 	return s.repo.Get(ctx, id)
+ }
+ 
++// Update заменяет текст существующей заметки и обновляет метку времени.
++// Возвращает ErrEmptyText при пустом тексте и ErrNotFound, если заметки нет.
++func (s *Service) Update(ctx context.Context, id, text string) (Note, error) {
++	text = strings.TrimSpace(text)
++	if text == "" {
++		return Note{}, ErrEmptyText
++	}
++
++	n, err := s.repo.Get(ctx, id)
++	if err != nil {
++		return Note{}, err
++	}
++
++	n.Text = text
++	n.UpdatedAt = s.clock.Now()
++	if err := s.repo.Update(ctx, n); err != nil {
++		return Note{}, err
++	}
++	return n, nil
++}
++
+ // List возвращает все заметки. Порядок определяется хранилищем.
+ func (s *Service) List(ctx context.Context) ([]Note, error) {
+ 	return s.repo.List(ctx)
+diff --git a/week-1/task-1/notes-api/internal/note/note_test.go b/week-1/task-1/notes-api/internal/note/note_test.go
+index f36b8b3..cc5221f 100644
+--- a/week-1/task-1/notes-api/internal/note/note_test.go
++++ b/week-1/task-1/notes-api/internal/note/note_test.go
+@@ -78,3 +78,46 @@ func TestServiceCreate(t *testing.T) {
+ 		})
+ 	}
+ }
++
++func TestServiceUpdate(t *testing.T) {
++	created := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
++	updated := time.Date(2026, 2, 2, 0, 0, 0, 0, time.UTC)
++
++	t.Run("updates text and touches UpdatedAt", func(t *testing.T) {
++		repo := newFakeRepo()
++		svc := NewService(repo, fixedID{id: "abc"}, fixedClock{t: updated})
++		repo.notes["abc"] = Note{ID: "abc", Text: "old", CreatedAt: created, UpdatedAt: created}
++
++		got, err := svc.Update(context.Background(), "abc", "  new  ")
++		if err != nil {
++			t.Fatalf("Update() err = %v, want nil", err)
++		}
++		if got.Text != "new" {
++			t.Errorf("Text = %q, want %q", got.Text, "new")
++		}
++		if !got.CreatedAt.Equal(created) {
++			t.Errorf("CreatedAt = %v, want %v (must not change)", got.CreatedAt, created)
++		}
++		if !got.UpdatedAt.Equal(updated) {
++			t.Errorf("UpdatedAt = %v, want %v", got.UpdatedAt, updated)
++		}
++	})
++
++	t.Run("empty text is rejected", func(t *testing.T) {
++		repo := newFakeRepo()
++		svc := NewService(repo, fixedID{id: "abc"}, fixedClock{t: updated})
++		repo.notes["abc"] = Note{ID: "abc", Text: "old", CreatedAt: created, UpdatedAt: created}
++
++		if _, err := svc.Update(context.Background(), "abc", "   "); !errors.Is(err, ErrEmptyText) {
++			t.Fatalf("Update() err = %v, want %v", err, ErrEmptyText)
++		}
++	})
++
++	t.Run("missing note returns ErrNotFound", func(t *testing.T) {
++		svc := NewService(newFakeRepo(), fixedID{id: "abc"}, fixedClock{t: updated})
++
++		if _, err := svc.Update(context.Background(), "missing", "text"); !errors.Is(err, ErrNotFound) {
++			t.Fatalf("Update() err = %v, want %v", err, ErrNotFound)
++		}
++	})
++}
+ M week-1/task-1/notes-api/internal/httpapi/handler.go
+ M week-1/task-1/notes-api/internal/note/note.go
+ M week-1/task-1/notes-api/internal/note/note_test.go

@@ -1,0 +1,130 @@
+diff --git a/week-1/task-1/notes-api/internal/httpapi/handler.go b/week-1/task-1/notes-api/internal/httpapi/handler.go
+index cbe3335..cc67af5 100644
+--- a/week-1/task-1/notes-api/internal/httpapi/handler.go
++++ b/week-1/task-1/notes-api/internal/httpapi/handler.go
+@@ -28,6 +28,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
+ 	h.mux.HandleFunc("POST /notes", h.create)
+ 	h.mux.HandleFunc("GET /notes", h.list)
+ 	h.mux.HandleFunc("GET /notes/{id}", h.get)
++	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
+ 	return h
+ }
+ 
+@@ -74,6 +75,34 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
+ 	h.writeJSON(w, r.Context(), http.StatusOK, n)
+ }
+ 
++// updateRequest — тело запроса на частичное обновление заметки.
++type updateRequest struct {
++	Text string `json:"text"`
++}
++
++func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
++	var req updateRequest
++	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
++		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
++		return
++	}
++
++	n, err := h.svc.Update(r.Context(), r.PathValue("id"), req.Text)
++	if err != nil {
++		if errors.Is(err, note.ErrNotFound) {
++			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
++			return
++		}
++		if errors.Is(err, note.ErrEmptyText) {
++			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
++			return
++		}
++		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to update note")
++		return
++	}
++	h.writeJSON(w, r.Context(), http.StatusOK, n)
++}
++
+ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
+ 	notes, err := h.svc.List(r.Context())
+ 	if err != nil {
+diff --git a/week-1/task-1/notes-api/internal/note/note.go b/week-1/task-1/notes-api/internal/note/note.go
+index f6e24e0..57b5e23 100644
+--- a/week-1/task-1/notes-api/internal/note/note.go
++++ b/week-1/task-1/notes-api/internal/note/note.go
+@@ -84,6 +84,28 @@ func (s *Service) Get(ctx context.Context, id string) (Note, error) {
+ 	return s.repo.Get(ctx, id)
+ }
+ 
++// Update частично обновляет текст заметки: проверяет ввод, подтягивает
++// существующую заметку, меняет текст и метку UpdatedAt (CreatedAt сохраняется)
++// и возвращает обновлённую заметку. Нет такой заметки — ErrNotFound.
++func (s *Service) Update(ctx context.Context, id, text string) (Note, error) {
++	text = strings.TrimSpace(text)
++	if text == "" {
++		return Note{}, ErrEmptyText
++	}
++
++	n, err := s.repo.Get(ctx, id)
++	if err != nil {
++		return Note{}, err
++	}
++
++	n.Text = text
++	n.UpdatedAt = s.clock.Now()
++	if err := s.repo.Update(ctx, n); err != nil {
++		return Note{}, err
++	}
++	return n, nil
++}
++
+ // List возвращает все заметки. Порядок определяется хранилищем.
+ func (s *Service) List(ctx context.Context) ([]Note, error) {
+ 	return s.repo.List(ctx)
+diff --git a/week-1/task-1/notes-api/internal/note/note_test.go b/week-1/task-1/notes-api/internal/note/note_test.go
+index f36b8b3..b7ca592 100644
+--- a/week-1/task-1/notes-api/internal/note/note_test.go
++++ b/week-1/task-1/notes-api/internal/note/note_test.go
+@@ -78,3 +78,45 @@ func TestServiceCreate(t *testing.T) {
+ 		})
+ 	}
+ }
++
++func TestServiceUpdate(t *testing.T) {
++	created := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
++	updated := time.Date(2026, 2, 2, 0, 0, 0, 0, time.UTC)
++
++	tests := []struct {
++		name    string
++		id      string
++		input   string
++		wantErr error
++		wantTxt string
++	}{
++		{name: "updates text and bumps UpdatedAt", id: "n1", input: "  new  ", wantErr: nil, wantTxt: "new"},
++		{name: "empty text is rejected", id: "n1", input: "   ", wantErr: ErrEmptyText},
++		{name: "missing note is not found", id: "nope", input: "x", wantErr: ErrNotFound},
++	}
++
++	for _, tt := range tests {
++		t.Run(tt.name, func(t *testing.T) {
++			repo := newFakeRepo()
++			repo.notes["n1"] = Note{ID: "n1", Text: "old", CreatedAt: created, UpdatedAt: created}
++			svc := NewService(repo, fixedID{id: "abc"}, fixedClock{t: updated})
++
++			got, err := svc.Update(context.Background(), tt.id, tt.input)
++			if !errors.Is(err, tt.wantErr) {
++				t.Fatalf("Update() err = %v, want %v", err, tt.wantErr)
++			}
++			if tt.wantErr != nil {
++				return
++			}
++			if got.Text != tt.wantTxt {
++				t.Errorf("Text = %q, want %q", got.Text, tt.wantTxt)
++			}
++			if !got.CreatedAt.Equal(created) {
++				t.Errorf("CreatedAt = %v, want %v (must be preserved)", got.CreatedAt, created)
++			}
++			if !got.UpdatedAt.Equal(updated) {
++				t.Errorf("UpdatedAt = %v, want %v", got.UpdatedAt, updated)
++			}
++		})
++	}
++}

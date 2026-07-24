@@ -1,0 +1,8 @@
+### GEN B (rules v2) ###
+build OK
+vet OK
+gofmt:
+?   	github.com/swanden/ai-challenge-advanced/week-1/task-1/notes-api/cmd/notes-api	[no test files]
+?   	github.com/swanden/ai-challenge-advanced/week-1/task-1/notes-api/internal/httpapi	[no test files]
+ok  	github.com/swanden/ai-challenge-advanced/week-1/task-1/notes-api/internal/note	(cached)
+?   	github.com/swanden/ai-challenge-advanced/week-1/task-1/notes-api/internal/storage	[no test files]
