@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "--init", "--network", "host",
+               "-v", "${CLAUDE_PROJECT_DIR}/.claude/qa-runs:/output",
+               "-w", "/output",
+               "mcr.microsoft.com/playwright/mcp", "--headless", "--output-dir", "/output"]
+    }
+  }
+}

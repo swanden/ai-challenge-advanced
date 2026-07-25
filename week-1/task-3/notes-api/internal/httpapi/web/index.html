@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 1.4rem; }
+    form { display: flex; gap: 8px; margin-bottom: 20px; }
+    input { flex: 1; padding: 8px; font-size: 1rem; }
+    button { padding: 8px 14px; font-size: 1rem; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between; align-items: center;
+         padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; }
+    .empty { color: #888; }
+    .error { color: #c00; min-height: 1.2em; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Заметки</h1>
+  <div class="error" id="error" data-testid="error"></div>
+  <form id="create-form" data-testid="create-form">
+    <input id="note-text" data-testid="note-input" placeholder="Текст заметки" autocomplete="off">
+    <button type="submit" data-testid="add-button">Добавить</button>
+  </form>
+  <ul id="notes" data-testid="notes-list"></ul>
+  <p class="empty" id="empty" data-testid="empty" hidden>Пока нет заметок</p>
+
+  <script>
+    const api = '/notes';
+    const listEl = document.getElementById('notes');
+    const emptyEl = document.getElementById('empty');
+    const errorEl = document.getElementById('error');
+
+    function showError(msg) { errorEl.textContent = msg || ''; }
+
+    async function load() {
+      showError('');
+      const res = await fetch(api);
+      if (!res.ok) { showError('Не удалось загрузить заметки'); return; }
+      const notes = await res.json() || [];
+      listEl.innerHTML = '';
+      emptyEl.hidden = notes.length > 0;
+      for (const n of notes) {
+        const li = document.createElement('li');
+        li.dataset.testid = 'note-item';
+        li.dataset.id = n.id;
+        const span = document.createElement('span');
+        span.textContent = n.text;
+        span.dataset.testid = 'note-text';
+        const del = document.createElement('button');
+        del.textContent = 'Удалить';
+        del.dataset.testid = 'delete-button';
+        del.onclick = () => remove(n.id);
+        li.append(span, del);
+        listEl.append(li);
+      }
+    }
+
+    async function create(text) {
+      showError('');
+      const res = await fetch(api, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      if (res.status === 400) { showError('Текст заметки обязателен'); return false; }
+      if (!res.ok) { showError('Не удалось создать заметку'); return false; }
+      return true;
+    }
+
+    async function remove(id) {
+      showError('');
+      const res = await fetch(api + '/' + id, { method: 'DELETE' });
+      if (!res.ok) { showError('Не удалось удалить заметку'); return; }
+      await load();
+    }
+
+    document.getElementById('create-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('note-text');
+      const text = input.value.trim();
+      if (await create(text)) { input.value = ''; await load(); }
+    });
+
+    load();
+  </script>
+</body>
+</html>
