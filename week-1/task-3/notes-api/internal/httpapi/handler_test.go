@@ -268,6 +268,144 @@ func TestHandlerGet(t *testing.T) {
 	}
 }
 
+// TestHandlerUpdate покрывает PATCH /notes/{id}: успешное обновление текста
+// и все ветки ошибок, которые хендлер обязан различать по errors.Is.
+func TestHandlerUpdate(t *testing.T) {
+	createdAt := testTime.Add(-time.Hour)
+	stored := note.Note{ID: "id-1", Text: "stored", CreatedAt: createdAt, UpdatedAt: createdAt}
+
+	tests := []struct {
+		name       string
+		path       string
+		body       string
+		repoErr    error
+		wantStatus int
+		wantErrMsg string
+		wantText   string
+	}{
+		{
+			name:       "valid body updates text",
+			path:       "/notes/id-1",
+			body:       `{"text":"  updated  "}`,
+			wantStatus: http.StatusOK,
+			wantText:   "updated",
+		},
+		{
+			name:       "broken json is 400",
+			path:       "/notes/id-1",
+			body:       `{"text":`,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "invalid json body",
+		},
+		{
+			name:       "wrong field type is 400",
+			path:       "/notes/id-1",
+			body:       `{"text":42}`,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "invalid json body",
+		},
+		{
+			name:       "empty body is 400",
+			path:       "/notes/id-1",
+			body:       ``,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "invalid json body",
+		},
+		{
+			name:       "blank text is 400 from domain",
+			path:       "/notes/id-1",
+			body:       `{"text":"   "}`,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "text is required",
+		},
+		{
+			name:       "missing text field is 400 from domain",
+			path:       "/notes/id-1",
+			body:       `{}`,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "text is required",
+		},
+		{
+			name:       "blank text on unknown id is 400, not 404",
+			path:       "/notes/nope",
+			body:       `{"text":"   "}`,
+			wantStatus: http.StatusBadRequest,
+			wantErrMsg: "text is required",
+		},
+		{
+			name:       "unknown id is 404",
+			path:       "/notes/nope",
+			body:       `{"text":"updated"}`,
+			wantStatus: http.StatusNotFound,
+			wantErrMsg: "note not found",
+		},
+		{
+			name:       "repository failure is 500",
+			path:       "/notes/id-1",
+			body:       `{"text":"updated"}`,
+			repoErr:    errors.New("db is down"),
+			wantStatus: http.StatusInternalServerError,
+			wantErrMsg: "failed to update note",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			repo := newStubRepo()
+			repo.notes[stored.ID] = stored
+			repo.err = tt.repoErr
+			h, _ := newTestHandler(repo)
+
+			req := httptest.NewRequest(http.MethodPatch, tt.path, strings.NewReader(tt.body))
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+
+			if rec.Code != tt.wantStatus {
+				t.Fatalf("status = %d, want %d (body %q)", rec.Code, tt.wantStatus, rec.Body.String())
+			}
+			if ct := rec.Header().Get("Content-Type"); ct != "application/json" {
+				t.Errorf("Content-Type = %q, want application/json", ct)
+			}
+			if tt.wantErrMsg != "" {
+				got := decodeError(t, rec.Body)
+				if got.Error != tt.wantErrMsg {
+					t.Fatalf("error = %q, want %q", got.Error, tt.wantErrMsg)
+				}
+				if strings.Contains(got.Error, "db is down") {
+					t.Errorf("internal error leaked to client: %q", got.Error)
+				}
+				if kept := repo.notes[stored.ID]; kept.Text != stored.Text {
+					t.Errorf("stored Text = %q, want %q — заметка изменилась при ошибке", kept.Text, stored.Text)
+				}
+				return
+			}
+
+			var got note.Note
+			if err := json.Unmarshal(rec.Body.Bytes(), &got); err != nil {
+				t.Fatalf("unmarshal note: %v", err)
+			}
+			if got.ID != stored.ID {
+				t.Errorf("ID = %q, want %q", got.ID, stored.ID)
+			}
+			if got.Text != tt.wantText {
+				t.Errorf("Text = %q, want %q", got.Text, tt.wantText)
+			}
+			if !got.CreatedAt.Equal(createdAt) {
+				t.Errorf("CreatedAt = %v, want %v — время создания менять нельзя", got.CreatedAt, createdAt)
+			}
+			if !got.UpdatedAt.Equal(testTime) {
+				t.Errorf("UpdatedAt = %v, want %v (время должно приходить из Clock)", got.UpdatedAt, testTime)
+			}
+			if !got.UpdatedAt.After(got.CreatedAt) {
+				t.Errorf("UpdatedAt (%v) не сдвинулся относительно CreatedAt (%v)", got.UpdatedAt, got.CreatedAt)
+			}
+			if kept := repo.notes[stored.ID]; kept != got {
+				t.Errorf("repo has %+v, want %+v — ответ разошёлся с сохранённым", kept, got)
+			}
+		})
+	}
+}
+
 func TestHandlerDelete(t *testing.T) {
 	tests := []struct {
 		name       string
@@ -381,6 +519,7 @@ func TestHandlerPassesRequestContext(t *testing.T) {
 	}{
 		{name: "create", method: http.MethodPost, path: "/notes", body: `{"text":"hi"}`},
 		{name: "get", method: http.MethodGet, path: "/notes/id-1", body: ""},
+		{name: "update", method: http.MethodPatch, path: "/notes/id-1", body: `{"text":"hi"}`},
 		{name: "list", method: http.MethodGet, path: "/notes", body: ""},
 		{name: "delete", method: http.MethodDelete, path: "/notes/id-1", body: ""},
 	}
@@ -421,7 +560,8 @@ func TestHandlerRouting(t *testing.T) {
 	}{
 		{name: "PUT /notes is not allowed", method: http.MethodPut, path: "/notes", wantStatus: http.StatusMethodNotAllowed},
 		{name: "POST /notes/{id} is not allowed", method: http.MethodPost, path: "/notes/id-1", wantStatus: http.StatusMethodNotAllowed},
-		{name: "PATCH /notes/{id} is not routed", method: http.MethodPatch, path: "/notes/id-1", wantStatus: http.StatusMethodNotAllowed},
+		// PATCH зарегистрирован: пустое тело доходит до хендлера и даёт 400, а не 405.
+		{name: "PATCH /notes/{id} is routed", method: http.MethodPatch, path: "/notes/id-1", wantStatus: http.StatusBadRequest},
 		{name: "PUT /notes/{id} is not routed", method: http.MethodPut, path: "/notes/id-1", wantStatus: http.StatusMethodNotAllowed},
 		{name: "DELETE /notes/{id} is routed", method: http.MethodDelete, path: "/notes/id-1", wantStatus: http.StatusNotFound},
 		{name: "DELETE /notes collection is not allowed", method: http.MethodDelete, path: "/notes", wantStatus: http.StatusMethodNotAllowed},

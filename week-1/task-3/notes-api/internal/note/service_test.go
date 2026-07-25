@@ -159,6 +159,158 @@ func TestServiceCreateRepoError(t *testing.T) {
 	}
 }
 
+// TestServiceUpdateTextNormalization покрывает валидацию текста в UpdateText:
+// правила те же, что при создании, и на пустом вводе репозиторий не трогаем.
+func TestServiceUpdateTextNormalization(t *testing.T) {
+	createdAt := svcTime.Add(-time.Hour)
+	stored := Note{ID: "id-1", Text: "stored", CreatedAt: createdAt, UpdatedAt: createdAt}
+
+	tests := []struct {
+		name     string
+		input    string
+		wantErr  error
+		wantText string
+	}{
+		{name: "plain text replaces the old one", input: "updated", wantText: "updated"},
+		{name: "surrounding spaces are trimmed", input: "   updated   ", wantText: "updated"},
+		{name: "newlines and tabs are trimmed", input: "\n\t updated \t\n", wantText: "updated"},
+		{name: "inner spaces are preserved", input: "  a  b  ", wantText: "a  b"},
+		{name: "unicode text survives", input: " заметка ", wantText: "заметка"},
+		{name: "empty string is rejected", input: "", wantErr: ErrEmptyText},
+		{name: "spaces only are rejected", input: "     ", wantErr: ErrEmptyText},
+		{name: "tabs and newlines only are rejected", input: "\t\n\r ", wantErr: ErrEmptyText},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			repo := newRecordingRepo()
+			repo.inner.notes[stored.ID] = stored
+			svc := newTestService(repo)
+
+			got, err := svc.UpdateText(context.Background(), stored.ID, tt.input)
+			if !errors.Is(err, tt.wantErr) {
+				t.Fatalf("UpdateText() err = %v, want %v", err, tt.wantErr)
+			}
+			if tt.wantErr != nil {
+				if got != (Note{}) {
+					t.Errorf("UpdateText() note = %+v, want zero value on error", got)
+				}
+				if repo.calls != 0 {
+					t.Errorf("repo called %d times on invalid input, want 0", repo.calls)
+				}
+				if repo.inner.notes[stored.ID] != stored {
+					t.Errorf("заметка изменилась при невалидном вводе: %+v", repo.inner.notes[stored.ID])
+				}
+				return
+			}
+
+			if got.Text != tt.wantText {
+				t.Errorf("Text = %q, want %q", got.Text, tt.wantText)
+			}
+			if repo.inner.notes[stored.ID].Text != tt.wantText {
+				t.Errorf("stored Text = %q, want %q (сервис сохранил ненормализованный текст)", repo.inner.notes[stored.ID].Text, tt.wantText)
+			}
+		})
+	}
+}
+
+// TestServiceUpdateTextTimestamps фиксирует правило: UpdatedAt берётся из Clock
+// и сдвигается, а id и CreatedAt заметки остаются прежними.
+func TestServiceUpdateTextTimestamps(t *testing.T) {
+	createdAt := svcTime.Add(-time.Hour)
+	stored := Note{ID: "id-1", Text: "stored", CreatedAt: createdAt, UpdatedAt: createdAt}
+
+	repo := newRecordingRepo()
+	repo.inner.notes[stored.ID] = stored
+	svc := newTestService(repo)
+
+	got, err := svc.UpdateText(context.Background(), stored.ID, "updated")
+	if err != nil {
+		t.Fatalf("UpdateText() err = %v", err)
+	}
+
+	if got.ID != stored.ID {
+		t.Errorf("ID = %q, want %q — id заметки менять нельзя", got.ID, stored.ID)
+	}
+	if !got.CreatedAt.Equal(createdAt) {
+		t.Errorf("CreatedAt = %v, want %v — время создания менять нельзя", got.CreatedAt, createdAt)
+	}
+	if !got.UpdatedAt.Equal(svcTime) {
+		t.Errorf("UpdatedAt = %v, want %v (время должно приходить из Clock)", got.UpdatedAt, svcTime)
+	}
+	if !got.UpdatedAt.After(got.CreatedAt) {
+		t.Errorf("UpdatedAt (%v) не сдвинулся относительно CreatedAt (%v)", got.UpdatedAt, got.CreatedAt)
+	}
+	if repo.gotNote != got {
+		t.Errorf("repo got %+v, want %+v — сервис вернул не то, что сохранил", repo.gotNote, got)
+	}
+	if repo.inner.notes[stored.ID] != got {
+		t.Errorf("stored note = %+v, want %+v", repo.inner.notes[stored.ID], got)
+	}
+}
+
+// TestServiceUpdateTextErrors проверяет, что ошибки чтения и записи доходят
+// наверх как есть и не превращаются в частично заполненную заметку.
+func TestServiceUpdateTextErrors(t *testing.T) {
+	repoErr := errors.New("storage unavailable")
+
+	tests := []struct {
+		name    string
+		id      string
+		seed    bool
+		repoErr error
+		wantErr error
+	}{
+		{name: "unknown id is ErrNotFound", id: "nope", seed: true, wantErr: ErrNotFound},
+		{name: "empty repo is ErrNotFound", id: "id-1", wantErr: ErrNotFound},
+		{name: "repo error is propagated", id: "id-1", seed: true, repoErr: repoErr, wantErr: repoErr},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			repo := newRecordingRepo()
+			if tt.seed {
+				repo.inner.notes["id-1"] = Note{ID: "id-1", Text: "stored", CreatedAt: svcTime, UpdatedAt: svcTime}
+			}
+			repo.err = tt.repoErr
+			svc := newTestService(repo)
+
+			got, err := svc.UpdateText(context.Background(), tt.id, "updated")
+			if !errors.Is(err, tt.wantErr) {
+				t.Fatalf("UpdateText() err = %v, want %v", err, tt.wantErr)
+			}
+			if got != (Note{}) {
+				t.Errorf("UpdateText() note = %+v, want zero value on error", got)
+			}
+		})
+	}
+}
+
+// failingUpdateRepo падает только на записи: Get проходит, Update возвращает ошибку.
+type failingUpdateRepo struct {
+	*recordingRepo
+	err error
+}
+
+func (r *failingUpdateRepo) Update(_ context.Context, _ Note) error { return r.err }
+
+// TestServiceUpdateTextWriteError покрывает вторую ветку ошибки: заметка
+// нашлась, но сохранить её не удалось.
+func TestServiceUpdateTextWriteError(t *testing.T) {
+	repoErr := errors.New("storage unavailable")
+	inner := newRecordingRepo()
+	inner.inner.notes["id-1"] = Note{ID: "id-1", Text: "stored", CreatedAt: svcTime, UpdatedAt: svcTime}
+	svc := newTestService(&failingUpdateRepo{recordingRepo: inner, err: repoErr})
+
+	got, err := svc.UpdateText(context.Background(), "id-1", "updated")
+	if !errors.Is(err, repoErr) {
+		t.Fatalf("UpdateText() err = %v, want %v", err, repoErr)
+	}
+	if got != (Note{}) {
+		t.Errorf("UpdateText() note = %+v, want zero value on repo error", got)
+	}
+}
+
 // TestServicePassThrough проверяет делегирование Get/Delete/List в репозиторий:
 // сами аргументы и ошибки не искажаются.
 func TestServicePassThrough(t *testing.T) {
@@ -285,6 +437,7 @@ func TestServicePassesContext(t *testing.T) {
 	}{
 		{name: "Create", call: func(ctx context.Context, svc *Service) { _, _ = svc.Create(ctx, "hello") }},
 		{name: "Get", call: func(ctx context.Context, svc *Service) { _, _ = svc.Get(ctx, "id-1") }},
+		{name: "UpdateText", call: func(ctx context.Context, svc *Service) { _, _ = svc.UpdateText(ctx, "id-1", "hello") }},
 		{name: "Delete", call: func(ctx context.Context, svc *Service) { _ = svc.Delete(ctx, "id-1") }},
 		{name: "List", call: func(ctx context.Context, svc *Service) { _, _ = svc.List(ctx) }},
 	}

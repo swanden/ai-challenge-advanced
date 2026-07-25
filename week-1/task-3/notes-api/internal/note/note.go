@@ -85,6 +85,27 @@ func (s *Service) Get(ctx context.Context, id string) (Note, error) {
 	return s.repo.Get(ctx, id)
 }
 
+// UpdateText частично обновляет заметку: заменяет текст и проставляет UpdatedAt.
+// Валидация текста — та же, что при создании: пустой текст недопустим.
+func (s *Service) UpdateText(ctx context.Context, id, text string) (Note, error) {
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return Note{}, ErrEmptyText
+	}
+
+	n, err := s.repo.Get(ctx, id)
+	if err != nil {
+		return Note{}, err
+	}
+
+	n.Text = text
+	n.UpdatedAt = s.clock.Now()
+	if err := s.repo.Update(ctx, n); err != nil {
+		return Note{}, err
+	}
+	return n, nil
+}
+
 // Delete удаляет заметку по id или возвращает ErrNotFound, если её нет.
 func (s *Service) Delete(ctx context.Context, id string) error {
 	return s.repo.Delete(ctx, id)

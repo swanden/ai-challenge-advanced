@@ -33,6 +33,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
 	h.mux.HandleFunc("POST /notes", h.create)
 	h.mux.HandleFunc("GET /notes", h.list)
 	h.mux.HandleFunc("GET /notes/{id}", h.get)
+	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
 	h.mux.HandleFunc("DELETE /notes/{id}", h.delete)
 
 	sub, _ := fs.Sub(webFS, "web")
@@ -78,6 +79,32 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to get note")
+		return
+	}
+	h.writeJSON(w, r.Context(), http.StatusOK, n)
+}
+
+type updateRequest struct {
+	Text string `json:"text"`
+}
+
+func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var req updateRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+		return
+	}
+	n, err := h.svc.UpdateText(r.Context(), id, req.Text)
+	if err != nil {
+		switch {
+		case errors.Is(err, note.ErrEmptyText):
+			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
+		case errors.Is(err, note.ErrNotFound):
+			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
+		default:
+			h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to update note")
+		}
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, n)

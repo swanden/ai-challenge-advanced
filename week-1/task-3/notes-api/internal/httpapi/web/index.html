@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Notes</title>
+  <link rel="icon" href="data:,">
   <style>
     body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; }
     h1 { font-size: 1.4rem; }
@@ -49,11 +50,15 @@
         const span = document.createElement('span');
         span.textContent = n.text;
         span.dataset.testid = 'note-text';
+        const edit = document.createElement('button');
+        edit.textContent = 'Изменить';
+        edit.dataset.testid = 'edit-button';
+        edit.onclick = () => rename(n.id, n.text);
         const del = document.createElement('button');
         del.textContent = 'Удалить';
         del.dataset.testid = 'delete-button';
         del.onclick = () => remove(n.id);
-        li.append(span, del);
+        li.append(span, edit, del);
         listEl.append(li);
       }
     }
@@ -68,6 +73,20 @@
       if (res.status === 400) { showError('Текст заметки обязателен'); return false; }
       if (!res.ok) { showError('Не удалось создать заметку'); return false; }
       return true;
+    }
+
+    async function rename(id, current) {
+      showError('');
+      const text = prompt('Новый текст заметки:', current);
+      if (text === null) return;
+      const res = await fetch(api + '/' + id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      if (res.status === 400) { showError('Текст заметки обязателен'); return; }
+      if (!res.ok) { showError('Не удалось изменить заметку'); return; }
+      await load();
     }
 
     async function remove(id) {
