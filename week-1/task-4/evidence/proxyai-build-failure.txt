@@ -1,0 +1,16 @@
+# Прогон 4.3-4.4 — ProxyAI, результат применения правок
+
+$ go build ./...
+# tasksapi/internal/httpapi
+internal/httpapi/handler.go:58:1: syntax error: non-declaration statement outside function body
+internal/httpapi/handler.go:128:1: syntax error: non-declaration statement outside function body
+internal/httpapi/handler.go:158:2: syntax error: non-declaration statement outside function body
+internal/httpapi/handler.go:165:2: syntax error: non-declaration statement outside function body
+
+Маркеры патча, попавшие в код:
+  строка 58:=======
+  строка 128:=======
+
+Дубли функции delete:
+  строка 39:func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
+  строка 109:func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {

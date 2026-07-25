@@ -1,0 +1,22 @@
+# Проверка поддержки вызова инструментов (раздел 6 отчёта)
+
+$ ollama show devstral | grep -A6 Capabilities
+  Capabilities
+    completion
+    tools
+  System
+    You are Devstral, a helpful agentic model trained by Mistral AI
+    and using the OpenHands scaffold.
+      You can interact with a computer to solve tasks.
+
+$ ollama show qwen2.5-coder:7b | grep -A6 Capabilities
+  Capabilities
+    completion
+    tools
+    insert
+  System
+    You are Qwen, created by Alibaba Cloud. You are a helpful assistant.
+
+Вывод: tools заявлены у обеих моделей, но ни одна не выполнила вызов на практике.
+Флаг отражает шаблон, а не поведение. Системный промпт Devstral прямо называет
+каркас, под который она обучена, — OpenHands.

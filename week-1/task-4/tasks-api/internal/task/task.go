@@ -1,0 +1,83 @@
+// Package task — доменный слой: модель задачи, бизнес-правила и контракт хранилища.
+// Про HTTP и про конкретное хранилище этот пакет не знает.
+package task
+
+import (
+	"context"
+	"errors"
+	"strings"
+	"sync"
+	"time"
+)
+
+// ErrNotFound возвращается, когда задачи с запрошенным id нет.
+var ErrNotFound = errors.New("task: not found")
+
+// ErrEmptyTitle возвращается при попытке создать задачу без названия.
+var ErrEmptyTitle = errors.New("task: title is empty")
+
+// Task — доменная модель задачи.
+type Task struct {
+	ID        int       `json:"id"`
+	Title     string    `json:"title"`
+	Done      bool      `json:"done"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+// Store — потокобезопасное хранилище задач в памяти.
+type Store struct {
+	mu     sync.RWMutex
+	tasks  map[int]Task
+	nextID int
+}
+
+// NewStore создаёт пустое хранилище, готовое к работе.
+func NewStore() *Store {
+	return &Store{tasks: make(map[int]Task), nextID: 1}
+}
+
+// Create проверяет название, присваивает id и сохраняет задачу.
+func (s *Store) Create(ctx context.Context, title string) (Task, error) {
+	title = strings.TrimSpace(title)
+	if title == "" {
+		return Task{}, ErrEmptyTitle
+	}
+
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	t := Task{
+		ID:        s.nextID,
+		Title:     title,
+		CreatedAt: time.Now().UTC(),
+	}
+	s.tasks[t.ID] = t
+	s.nextID++
+	return t, nil
+}
+
+// Get возвращает задачу по id или ErrNotFound.
+func (s *Store) Get(ctx context.Context, id int) (Task, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	t, ok := s.tasks[id]
+	if !ok {
+		return Task{}, ErrNotFound
+	}
+	return t, nil
+}
+
+// List возвращает все задачи, отсортированные по id для детерминированной выдачи.
+func (s *Store) List(ctx context.Context) ([]Task, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	out := make([]Task, 0, len(s.tasks))
+	for id := 1; id < s.nextID; id++ {
+		if t, ok := s.tasks[id]; ok {
+			out = append(out, t)
+		}
+	}
+	return out, nil
+}
