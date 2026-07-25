@@ -1,0 +1,10 @@
+- generic [active] [ref=f7e1]:
+  - heading "Заметки" [level=1] [ref=f7e2]
+  - generic [ref=f7e4]:
+    - textbox "Текст заметки" [ref=f7e5]
+    - button "Добавить" [ref=f7e6] [cursor=pointer]
+  - list [ref=f7e7]:
+    - listitem [ref=f7e8]:
+      - generic [ref=f7e9]: Исходный текст
+      - button "Изменить" [ref=f7e10] [cursor=pointer]
+      - button "Удалить" [ref=f7e11] [cursor=pointer]

@@ -1,0 +1,7 @@
+- generic [active] [ref=f4e1]:
+  - heading "Заметки" [level=1] [ref=f4e2]
+  - generic [ref=f4e4]:
+    - textbox "Текст заметки" [ref=f4e5]
+    - button "Добавить" [ref=f4e6] [cursor=pointer]
+  - list
+  - paragraph [ref=f4e32]: Пока нет заметок

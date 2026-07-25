@@ -1,0 +1,5 @@
+ok  	github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/cmd/notes-api	0.568s	coverage: 89.5% of statements
+ok  	github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/httpapi	0.990s	coverage: 100.0% of statements
+ok  	github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note	0.746s	coverage: 96.4% of statements
+ok  	github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/storage	0.264s	coverage: 100.0% of statements
+total:													(statements)	97.9%

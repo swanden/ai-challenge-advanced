@@ -1,0 +1,18 @@
+- generic [active] [ref=f2e1]:
+  - heading "Заметки" [level=1] [ref=f2e2]
+  - generic [ref=f2e4]:
+    - textbox "Текст заметки" [ref=f2e5]
+    - button "Добавить" [ref=f2e6] [cursor=pointer]
+  - list [ref=f2e7]:
+    - listitem [ref=f2e24]:
+      - generic [ref=f2e25]: Хлеб
+      - button "Изменить" [ref=f2e26] [cursor=pointer]
+      - button "Удалить" [ref=f2e27] [cursor=pointer]
+    - listitem [ref=f2e28]:
+      - generic [ref=f2e29]: Сыр
+      - button "Изменить" [ref=f2e30] [cursor=pointer]
+      - button "Удалить" [ref=f2e31] [cursor=pointer]
+    - listitem [ref=f2e32]:
+      - generic [ref=f2e33]: Чай
+      - button "Изменить" [ref=f2e34] [cursor=pointer]
+      - button "Удалить" [ref=f2e35] [cursor=pointer]
