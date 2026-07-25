@@ -1,0 +1,503 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>notes-api: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/cmd/notes-api/main.go (0.0%)</option>
+				
+				<option value="file1">github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/httpapi/handler.go (100.0%)</option>
+				
+				<option value="file2">github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note/deps.go (80.0%)</option>
+				
+				<option value="file3">github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note/note.go (100.0%)</option>
+				
+				<option value="file4">github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/storage/memory.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">// Command notes-api поднимает HTTP-сервис заметок. Точка входа отвечает только
+// за сборку зависимостей (wiring), запуск сервера и корректное завершение.
+package main
+
+import (
+        "context"
+        "errors"
+        "log/slog"
+        "net/http"
+        "os"
+        "os/signal"
+        "syscall"
+        "time"
+
+        "github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/httpapi"
+        "github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note"
+        "github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/storage"
+)
+
+func main() <span class="cov0" title="0">{
+        log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+
+        repo := storage.NewMemoryRepo()
+        svc := note.NewService(repo, note.RandomID{}, note.SystemClock{})
+        handler := httpapi.NewHandler(svc, log)
+
+        srv := &amp;http.Server{
+                Addr:              ":8080",
+                Handler:           handler,
+                ReadHeaderTimeout: 5 * time.Second,
+        }
+
+        // Слушаем сигналы завершения, чтобы закрыть сервер аккуратно.
+        ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+        defer stop()
+
+        go func() </span><span class="cov0" title="0">{
+                log.Info("server starting", slog.String("addr", srv.Addr))
+                if err := srv.ListenAndServe(); err != nil &amp;&amp; !errors.Is(err, http.ErrServerClosed) </span><span class="cov0" title="0">{
+                        log.Error("server failed", slog.Any("error", err))
+                        stop()
+                }</span>
+        }()
+
+        <span class="cov0" title="0">&lt;-ctx.Done()
+        log.Info("shutting down")
+
+        shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+        defer cancel()
+        if err := srv.Shutdown(shutdownCtx); err != nil </span><span class="cov0" title="0">{
+                log.Error("graceful shutdown failed", slog.Any("error", err))
+                os.Exit(1)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">// Package httpapi — транспортный слой: превращает HTTP-запросы в вызовы
+// сервиса note.Service и обратно. Здесь нет бизнес-логики, только разбор
+// запроса, вызов сервиса и формирование ответа.
+package httpapi
+
+import (
+        "context"
+        "embed"
+        "encoding/json"
+        "errors"
+        "io/fs"
+        "log/slog"
+        "net/http"
+
+        "github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note"
+)
+
+//go:embed web
+var webFS embed.FS
+
+// Handler держит зависимости транспортного слоя и реализует http.Handler
+// через собранный роутер.
+type Handler struct {
+        svc *note.Service
+        log *slog.Logger
+        mux *http.ServeMux
+}
+
+// NewHandler собирает роутер и регистрирует маршруты. Возвращаемое значение
+// готово к передаче в http.Server.
+func NewHandler(svc *note.Service, log *slog.Logger) *Handler <span class="cov8" title="1">{
+        h := &amp;Handler{svc: svc, log: log, mux: http.NewServeMux()}
+        h.mux.HandleFunc("POST /notes", h.create)
+        h.mux.HandleFunc("GET /notes", h.list)
+        h.mux.HandleFunc("GET /notes/{id}", h.get)
+        h.mux.HandleFunc("DELETE /notes/{id}", h.delete)
+
+        sub, _ := fs.Sub(webFS, "web")
+        h.mux.Handle("GET /", http.FileServerFS(sub))
+        return h
+}</span>
+
+// ServeHTTP делает Handler совместимым с http.Handler.
+func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        h.mux.ServeHTTP(w, r)
+}</span>
+
+// createRequest — тело запроса на создание заметки.
+type createRequest struct {
+        Text string `json:"text"`
+}
+
+func (h *Handler) create(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var req createRequest
+        if err := json.NewDecoder(r.Body).Decode(&amp;req); err != nil </span><span class="cov8" title="1">{
+                h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+                return
+        }</span>
+
+        <span class="cov8" title="1">n, err := h.svc.Create(r.Context(), req.Text)
+        if err != nil </span><span class="cov8" title="1">{
+                if errors.Is(err, note.ErrEmptyText) </span><span class="cov8" title="1">{
+                        h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
+                        return
+                }</span>
+                <span class="cov8" title="1">h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to create note")
+                return</span>
+        }
+        <span class="cov8" title="1">h.writeJSON(w, r.Context(), http.StatusCreated, n)</span>
+}
+
+func (h *Handler) get(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        id := r.PathValue("id")
+        n, err := h.svc.Get(r.Context(), id)
+        if err != nil </span><span class="cov8" title="1">{
+                if errors.Is(err, note.ErrNotFound) </span><span class="cov8" title="1">{
+                        h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
+                        return
+                }</span>
+                <span class="cov8" title="1">h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to get note")
+                return</span>
+        }
+        <span class="cov8" title="1">h.writeJSON(w, r.Context(), http.StatusOK, n)</span>
+}
+
+func (h *Handler) delete(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        id := r.PathValue("id")
+        if err := h.svc.Delete(r.Context(), id); err != nil </span><span class="cov8" title="1">{
+                if errors.Is(err, note.ErrNotFound) </span><span class="cov8" title="1">{
+                        h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
+                        return
+                }</span>
+                <span class="cov8" title="1">h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to delete note")
+                return</span>
+        }
+        <span class="cov8" title="1">w.WriteHeader(http.StatusNoContent)</span>
+}
+
+func (h *Handler) list(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        notes, err := h.svc.List(r.Context())
+        if err != nil </span><span class="cov8" title="1">{
+                h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to list notes")
+                return
+        }</span>
+        <span class="cov8" title="1">h.writeJSON(w, r.Context(), http.StatusOK, notes)</span>
+}
+
+// writeJSON сериализует значение и пишет его с заданным статусом.
+func (h *Handler) writeJSON(w http.ResponseWriter, ctx context.Context, status int, v any) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+        w.WriteHeader(status)
+        if err := json.NewEncoder(w).Encode(v); err != nil </span><span class="cov8" title="1">{
+                h.log.ErrorContext(ctx, "encode response", slog.Any("error", err))
+        }</span>
+}
+
+// errorResponse — единый формат тела ошибки.
+type errorResponse struct {
+        Error string `json:"error"`
+}
+
+func (h *Handler) writeError(w http.ResponseWriter, ctx context.Context, status int, msg string) <span class="cov8" title="1">{
+        h.writeJSON(w, ctx, status, errorResponse{Error: msg})
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package note
+
+import (
+        "crypto/rand"
+        "encoding/hex"
+        "time"
+)
+
+// RandomID реализует IDGenerator через crypto/rand. Пустой struct — состояния нет.
+type RandomID struct{}
+
+// NewID возвращает 16-символьный hex-идентификатор. При сбое системного
+// генератора случайностей паниковать нельзя молча — но в учебном сервисе
+// мы считаем такой сбой фатальным на уровне ОС и пробрасываем панику.
+func (RandomID) NewID() string <span class="cov8" title="1">{
+        buf := make([]byte, 8)
+        if _, err := rand.Read(buf); err != nil </span><span class="cov0" title="0">{
+                panic("note: system entropy source failed: " + err.Error())</span>
+        }
+        <span class="cov8" title="1">return hex.EncodeToString(buf)</span>
+}
+
+// SystemClock реализует Clock через реальные системные часы.
+type SystemClock struct{}
+
+// Now возвращает текущее время в UTC, чтобы метки не зависели от зоны сервера.
+func (SystemClock) Now() time.Time <span class="cov8" title="1">{ return time.Now().UTC() }</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">// Package note содержит доменную модель заметки и бизнес-логику работы с ней.
+// Слой ничего не знает про HTTP и про конкретное хранилище — он оперирует
+// только интерфейсом Repository, поэтому его легко тестировать и переиспользовать.
+package note
+
+import (
+        "context"
+        "errors"
+        "strings"
+        "time"
+)
+
+// ErrNotFound возвращается, когда заметка с запрошенным id отсутствует.
+// Транспортный слой сам решает, как отобразить эту ошибку (например, как 404).
+var ErrNotFound = errors.New("note: not found")
+
+// ErrEmptyText возвращается при попытке создать или обновить заметку без текста.
+var ErrEmptyText = errors.New("note: text is empty")
+
+// Note — доменная модель заметки. Поля экспортируются для сериализации,
+// но заполняются только через конструкторы и методы сервиса.
+type Note struct {
+        ID        string    `json:"id"`
+        Text      string    `json:"text"`
+        CreatedAt time.Time `json:"created_at"`
+        UpdatedAt time.Time `json:"updated_at"`
+}
+
+// Repository — контракт хранилища заметок. Слой note зависит от абстракции,
+// а не от конкретной реализации (in-memory, БД и т.п.).
+type Repository interface {
+        Create(ctx context.Context, n Note) error
+        Get(ctx context.Context, id string) (Note, error)
+        Update(ctx context.Context, n Note) error
+        Delete(ctx context.Context, id string) error
+        List(ctx context.Context) ([]Note, error)
+}
+
+// IDGenerator возвращает уникальный идентификатор для новой заметки.
+// Вынесен в интерфейс, чтобы в тестах подставлять детерминированный генератор.
+type IDGenerator interface {
+        NewID() string
+}
+
+// Clock отдаёт текущее время. Абстракция нужна, чтобы фиксировать время в тестах.
+type Clock interface {
+        Now() time.Time
+}
+
+// Service инкапсулирует бизнес-правила работы с заметками.
+type Service struct {
+        repo  Repository
+        ids   IDGenerator
+        clock Clock
+}
+
+// NewService собирает сервис из его зависимостей. Все зависимости обязательны:
+// передача nil — ошибка программиста, а не сценарий рантайма.
+func NewService(repo Repository, ids IDGenerator, clock Clock) *Service <span class="cov8" title="1">{
+        return &amp;Service{repo: repo, ids: ids, clock: clock}
+}</span>
+
+// Create проверяет входные данные, проставляет id и временные метки и сохраняет заметку.
+func (s *Service) Create(ctx context.Context, text string) (Note, error) <span class="cov8" title="1">{
+        text = strings.TrimSpace(text)
+        if text == "" </span><span class="cov8" title="1">{
+                return Note{}, ErrEmptyText
+        }</span>
+
+        <span class="cov8" title="1">now := s.clock.Now()
+        n := Note{
+                ID:        s.ids.NewID(),
+                Text:      text,
+                CreatedAt: now,
+                UpdatedAt: now,
+        }
+        if err := s.repo.Create(ctx, n); err != nil </span><span class="cov8" title="1">{
+                return Note{}, err
+        }</span>
+        <span class="cov8" title="1">return n, nil</span>
+}
+
+// Get возвращает заметку по id или ErrNotFound, если её нет.
+func (s *Service) Get(ctx context.Context, id string) (Note, error) <span class="cov8" title="1">{
+        return s.repo.Get(ctx, id)
+}</span>
+
+// Delete удаляет заметку по id или возвращает ErrNotFound, если её нет.
+func (s *Service) Delete(ctx context.Context, id string) error <span class="cov8" title="1">{
+        return s.repo.Delete(ctx, id)
+}</span>
+
+// List возвращает все заметки. Порядок определяется хранилищем.
+func (s *Service) List(ctx context.Context) ([]Note, error) <span class="cov8" title="1">{
+        return s.repo.List(ctx)
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">// Package storage содержит реализации note.Repository. Пока это только
+// потокобезопасное хранилище в памяти, но за интерфейсом может стоять и БД.
+package storage
+
+import (
+        "context"
+        "sort"
+        "sync"
+
+        "github.com/swanden/ai-challenge-advanced/week-1/task-3/notes-api/internal/note"
+)
+
+// MemoryRepo хранит заметки в памяти. Безопасен для конкурентного доступа:
+// каждый метод защищён мьютексом, так как http-сервер обрабатывает запросы
+// в нескольких горутинах одновременно.
+type MemoryRepo struct {
+        mu    sync.RWMutex
+        notes map[string]note.Note
+}
+
+// NewMemoryRepo создаёт пустое хранилище, готовое к использованию.
+func NewMemoryRepo() *MemoryRepo <span class="cov8" title="1">{
+        return &amp;MemoryRepo{notes: make(map[string]note.Note)}
+}</span>
+
+// Create сохраняет новую заметку. Дубликат id считается ошибкой программиста
+// (id генерирует сервис), поэтому здесь мы просто перезаписываем — но под
+// блокировкой, чтобы не словить гонку.
+func (r *MemoryRepo) Create(ctx context.Context, n note.Note) error <span class="cov8" title="1">{
+        r.mu.Lock()
+        defer r.mu.Unlock()
+        r.notes[n.ID] = n
+        return nil
+}</span>
+
+// Get возвращает копию заметки или note.ErrNotFound.
+func (r *MemoryRepo) Get(ctx context.Context, id string) (note.Note, error) <span class="cov8" title="1">{
+        r.mu.RLock()
+        defer r.mu.RUnlock()
+        n, ok := r.notes[id]
+        if !ok </span><span class="cov8" title="1">{
+                return note.Note{}, note.ErrNotFound
+        }</span>
+        <span class="cov8" title="1">return n, nil</span>
+}
+
+// Update перезаписывает существующую заметку. Если её нет — note.ErrNotFound.
+func (r *MemoryRepo) Update(ctx context.Context, n note.Note) error <span class="cov8" title="1">{
+        r.mu.Lock()
+        defer r.mu.Unlock()
+        if _, ok := r.notes[n.ID]; !ok </span><span class="cov8" title="1">{
+                return note.ErrNotFound
+        }</span>
+        <span class="cov8" title="1">r.notes[n.ID] = n
+        return nil</span>
+}
+
+// Delete удаляет заметку. Если её нет — note.ErrNotFound.
+func (r *MemoryRepo) Delete(ctx context.Context, id string) error <span class="cov8" title="1">{
+        r.mu.Lock()
+        defer r.mu.Unlock()
+        if _, ok := r.notes[id]; !ok </span><span class="cov8" title="1">{
+                return note.ErrNotFound
+        }</span>
+        <span class="cov8" title="1">delete(r.notes, id)
+        return nil</span>
+}
+
+// List возвращает все заметки, отсортированные по времени создания,
+// чтобы выдача была детерминированной.
+func (r *MemoryRepo) List(ctx context.Context) ([]note.Note, error) <span class="cov8" title="1">{
+        r.mu.RLock()
+        defer r.mu.RUnlock()
+
+        out := make([]note.Note, 0, len(r.notes))
+        for _, n := range r.notes </span><span class="cov8" title="1">{
+                out = append(out, n)
+        }</span>
+        <span class="cov8" title="1">sort.Slice(out, func(i, j int) bool </span><span class="cov8" title="1">{
+                return out[i].CreatedAt.Before(out[j].CreatedAt)
+        }</span>)
+        <span class="cov8" title="1">return out, nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
