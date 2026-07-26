@@ -85,3 +85,45 @@ func TestServiceCreate(t *testing.T) {
 		})
 	}
 }
+
+func TestServiceUpdateText(t *testing.T) {
+	created := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
+	updated := time.Date(2026, 1, 2, 0, 0, 0, 0, time.UTC)
+
+	tests := []struct {
+		name    string
+		id      string
+		input   string
+		wantErr error
+		wantTxt string
+	}{
+		{name: "updates text and shifts UpdatedAt", id: "abc", input: "  new text  ", wantErr: nil, wantTxt: "new text"},
+		{name: "empty text is rejected", id: "abc", input: "   ", wantErr: ErrEmptyText},
+		{name: "unknown id is rejected", id: "missing", input: "text", wantErr: ErrNotFound},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			repo := newFakeRepo()
+			repo.notes["abc"] = Note{ID: "abc", Text: "old text", CreatedAt: created, UpdatedAt: created}
+			svc := NewService(repo, fixedID{id: "abc"}, fixedClock{t: updated})
+
+			got, err := svc.UpdateText(context.Background(), tt.id, tt.input)
+			if !errors.Is(err, tt.wantErr) {
+				t.Fatalf("UpdateText() err = %v, want %v", err, tt.wantErr)
+			}
+			if tt.wantErr != nil {
+				return
+			}
+			if got.Text != tt.wantTxt {
+				t.Errorf("Text = %q, want %q", got.Text, tt.wantTxt)
+			}
+			if !got.UpdatedAt.Equal(updated) {
+				t.Errorf("UpdatedAt = %v, want %v", got.UpdatedAt, updated)
+			}
+			if !got.CreatedAt.Equal(created) {
+				t.Errorf("CreatedAt = %v, want %v", got.CreatedAt, created)
+			}
+		})
+	}
+}
