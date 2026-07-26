@@ -111,9 +111,25 @@ func (s *Service) Delete(ctx context.Context, id string) error {
 	return s.repo.Delete(ctx, id)
 }
 
-// List возвращает все заметки. Порядок определяется хранилищем.
-func (s *Service) List(ctx context.Context) ([]Note, error) {
-	return s.repo.List(ctx)
+// List возвращает заметки, порядок определяется хранилищем. Если query непустой,
+// возвращаются только заметки, чей текст содержит query без учёта регистра.
+func (s *Service) List(ctx context.Context, query string) ([]Note, error) {
+	notes, err := s.repo.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if query == "" {
+		return notes, nil
+	}
+
+	query = strings.ToLower(query)
+	out := make([]Note, 0, len(notes))
+	for _, n := range notes {
+		if strings.Contains(strings.ToLower(n.Text), query) {
+			out = append(out, n)
+		}
+	}
+	return out, nil
 }
 
 // Count возвращает количество хранимых заметок.

@@ -126,7 +126,8 @@ func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
-	notes, err := h.svc.List(r.Context())
+	q := r.URL.Query().Get("q")
+	notes, err := h.svc.List(r.Context(), q)
 	if err != nil {
 		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to list notes")
 		return
