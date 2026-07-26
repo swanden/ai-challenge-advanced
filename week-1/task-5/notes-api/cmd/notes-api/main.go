@@ -17,6 +17,11 @@ import (
 	"github.com/swanden/ai-challenge-advanced/week-1/task-5/notes-api/internal/storage"
 )
 
+const (
+	serverAddr        = ":8080"
+	readHeaderTimeout = 5 * time.Second
+)
+
 func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
@@ -25,9 +30,9 @@ func main() {
 	handler := httpapi.NewHandler(svc, log)
 
 	srv := &http.Server{
-		Addr:              ":8080",
+		Addr:              serverAddr,
 		Handler:           handler,
-		ReadHeaderTimeout: 5 * time.Second,
+		ReadHeaderTimeout: readHeaderTimeout,
 	}
 
 	// Слушаем сигналы завершения, чтобы закрыть сервер аккуратно.
