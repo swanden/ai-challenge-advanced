@@ -88,6 +88,7 @@ func (s *Service) Get(ctx context.Context, id string) (Note, error) {
 // UpdateText частично обновляет заметку: заменяет текст и проставляет UpdatedAt.
 // Валидация текста — та же, что при создании: пустой текст недопустим.
 func (s *Service) UpdateText(ctx context.Context, id, text string) (Note, error) {
+	text = strings.TrimSpace(text)
 	if text == "" {
 		return Note{}, ErrEmptyText
 	}
