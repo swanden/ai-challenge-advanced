@@ -17,6 +17,14 @@ HTTP-сервис заметок на Go. Только стандартная б
 
 Поток: хендлер → `note.Service` → `note.Repository`. Хендлер в репозиторий напрямую не ходит.
 
+## Эндпоинты
+
+Регистрируются в `NewHandler` (`internal/httpapi/handler.go`): `POST /notes`,
+`GET /notes` (с опциональным `?q=подстрока` — регистронезависимый фильтр по тексту),
+`GET /notes/count`, `GET /notes/{id}`, `PATCH /notes/{id}`, `DELETE /notes/{id}`,
+`GET /healthz`, `GET /` (статика веб-интерфейса). Подробности и коды ответов —
+в `README-project.md`.
+
 ## Обязательные правила
 
 1. `context.Context` первым аргументом у всего, что делает I/O; в хендлере берётся
