@@ -72,7 +72,7 @@ func (r *MemoryRepo) List(ctx context.Context) ([]note.Note, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	var out []note.Note
+	out := make([]note.Note, 0, len(r.notes))
 	for _, n := range r.notes {
 		out = append(out, n)
 	}
