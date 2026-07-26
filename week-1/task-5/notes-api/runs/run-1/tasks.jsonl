@@ -1,0 +1,15 @@
+{"id":"T-01","type":"bug","verdict":"DONE","seconds":25,"gate_attempts":1,"commit":"84af49d","note":""}
+{"id":"T-02","type":"bug","verdict":"DONE","seconds":20,"gate_attempts":1,"commit":"2573c6e","note":""}
+{"id":"T-03","type":"bug","verdict":"DONE","seconds":18,"gate_attempts":1,"commit":"e8f2a1b","note":""}
+{"id":"T-04","type":"test","verdict":"DONE","seconds":60,"gate_attempts":1,"commit":"7e13e53","note":""}
+{"id":"T-05","type":"test","verdict":"DONE","seconds":90,"gate_attempts":1,"commit":"7c602f5","note":""}
+{"id":"T-06","type":"test","verdict":"DONE","seconds":30,"gate_attempts":1,"commit":"a386cb8","note":""}
+{"id":"T-07","type":"feature","verdict":"DONE","seconds":110,"gate_attempts":1,"commit":"d78426c","note":"count реализован через Service.Count (repo.List+len), отдельный метод в Repository не добавлял"}
+{"id":"T-08","type":"feature","verdict":"DONE","seconds":60,"gate_attempts":1,"commit":"dd7f4c1","note":""}
+{"id":"T-09","type":"feature","verdict":"DONE","seconds":95,"gate_attempts":1,"commit":"515cee9","note":"изменил сигнатуру Service.List на List(ctx, query) — других вызывающих кроме хендлера не было"}
+{"id":"T-10","type":"refactor","verdict":"DONE","seconds":40,"gate_attempts":1,"commit":"5206db3","note":""}
+{"id":"T-11","type":"refactor","verdict":"DONE","seconds":100,"gate_attempts":1,"commit":"efe20ca","note":""}
+{"id":"T-12","type":"refactor","verdict":"DONE","seconds":75,"gate_attempts":1,"commit":"40b199d","note":""}
+{"id":"T-13","type":"docs","verdict":"DONE","seconds":50,"gate_attempts":1,"commit":"d0a32b3","note":""}
+{"id":"T-14","type":"docs","verdict":"DONE","seconds":35,"gate_attempts":1,"commit":"76f1e97","note":""}
+{"id":"T-15","type":"docs","verdict":"DONE","seconds":40,"gate_attempts":1,"commit":"854f71d","note":""}
