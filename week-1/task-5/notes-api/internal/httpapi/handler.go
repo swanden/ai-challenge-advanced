@@ -32,6 +32,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
 	h := &Handler{svc: svc, log: log, mux: http.NewServeMux()}
 	h.mux.HandleFunc("POST /notes", h.create)
 	h.mux.HandleFunc("GET /notes", h.list)
+	h.mux.HandleFunc("GET /notes/count", h.count)
 	h.mux.HandleFunc("GET /notes/{id}", h.get)
 	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
 	h.mux.HandleFunc("DELETE /notes/{id}", h.delete)
@@ -130,6 +131,19 @@ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, notes)
+}
+
+type countResponse struct {
+	Count int `json:"count"`
+}
+
+func (h *Handler) count(w http.ResponseWriter, r *http.Request) {
+	n, err := h.svc.Count(r.Context())
+	if err != nil {
+		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to count notes")
+		return
+	}
+	h.writeJSON(w, r.Context(), http.StatusOK, countResponse{Count: n})
 }
 
 // writeJSON сериализует значение и пишет его с заданным статусом.

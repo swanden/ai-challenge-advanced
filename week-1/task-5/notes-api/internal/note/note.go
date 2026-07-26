@@ -115,3 +115,12 @@ func (s *Service) Delete(ctx context.Context, id string) error {
 func (s *Service) List(ctx context.Context) ([]Note, error) {
 	return s.repo.List(ctx)
 }
+
+// Count возвращает количество хранимых заметок.
+func (s *Service) Count(ctx context.Context) (int, error) {
+	notes, err := s.repo.List(ctx)
+	if err != nil {
+		return 0, err
+	}
+	return len(notes), nil
+}
