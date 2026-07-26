@@ -36,6 +36,7 @@ func NewHandler(svc *note.Service, log *slog.Logger) *Handler {
 	h.mux.HandleFunc("GET /notes/{id}", h.get)
 	h.mux.HandleFunc("PATCH /notes/{id}", h.update)
 	h.mux.HandleFunc("DELETE /notes/{id}", h.delete)
+	h.mux.HandleFunc("GET /healthz", h.healthz)
 
 	sub, _ := fs.Sub(webFS, "web")
 	h.mux.Handle("GET /", http.FileServerFS(sub))
@@ -131,6 +132,14 @@ func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, notes)
+}
+
+type healthzResponse struct {
+	Status string `json:"status"`
+}
+
+func (h *Handler) healthz(w http.ResponseWriter, r *http.Request) {
+	h.writeJSON(w, r.Context(), http.StatusOK, healthzResponse{Status: "ok"})
 }
 
 type countResponse struct {
