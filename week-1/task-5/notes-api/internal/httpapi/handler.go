@@ -120,7 +120,7 @@ func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
 		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to delete note")
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func (h *Handler) list(w http.ResponseWriter, r *http.Request) {
