@@ -62,11 +62,7 @@ func (h *Handler) create(w http.ResponseWriter, r *http.Request) {
 
 	n, err := h.svc.Create(r.Context(), req.Text)
 	if err != nil {
-		if errors.Is(err, note.ErrEmptyText) {
-			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
-			return
-		}
-		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to create note")
+		h.writeNoteError(w, r.Context(), err, "text is required", "", "failed to create note")
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusCreated, n)
@@ -76,11 +72,7 @@ func (h *Handler) get(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	n, err := h.svc.Get(r.Context(), id)
 	if err != nil {
-		if errors.Is(err, note.ErrNotFound) {
-			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
-			return
-		}
-		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to get note")
+		h.writeNoteError(w, r.Context(), err, "", "note not found", "failed to get note")
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, n)
@@ -99,14 +91,7 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 	}
 	n, err := h.svc.UpdateText(r.Context(), id, req.Text)
 	if err != nil {
-		switch {
-		case errors.Is(err, note.ErrEmptyText):
-			h.writeError(w, r.Context(), http.StatusBadRequest, "text is required")
-		case errors.Is(err, note.ErrNotFound):
-			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
-		default:
-			h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to update note")
-		}
+		h.writeNoteError(w, r.Context(), err, "text is required", "note not found", "failed to update note")
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, n)
@@ -115,11 +100,7 @@ func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) delete(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	if err := h.svc.Delete(r.Context(), id); err != nil {
-		if errors.Is(err, note.ErrNotFound) {
-			h.writeError(w, r.Context(), http.StatusNotFound, "note not found")
-			return
-		}
-		h.writeError(w, r.Context(), http.StatusInternalServerError, "failed to delete note")
+		h.writeNoteError(w, r.Context(), err, "", "note not found", "failed to delete note")
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
@@ -172,4 +153,19 @@ type errorResponse struct {
 
 func (h *Handler) writeError(w http.ResponseWriter, ctx context.Context, status int, msg string) {
 	h.writeJSON(w, ctx, status, errorResponse{Error: msg})
+}
+
+// writeNoteError мапит доменную ошибку note в HTTP-статус и пишет ответ.
+// emptyTextMsg и notFoundMsg — тексты для ErrEmptyText и ErrNotFound; пустая
+// строка означает, что хендлер не ожидает такую ошибку от сервиса и она
+// попадёт в fallback. fallbackMsg — текст для всех остальных ошибок (500).
+func (h *Handler) writeNoteError(w http.ResponseWriter, ctx context.Context, err error, emptyTextMsg, notFoundMsg, fallbackMsg string) {
+	switch {
+	case emptyTextMsg != "" && errors.Is(err, note.ErrEmptyText):
+		h.writeError(w, ctx, http.StatusBadRequest, emptyTextMsg)
+	case notFoundMsg != "" && errors.Is(err, note.ErrNotFound):
+		h.writeError(w, ctx, http.StatusNotFound, notFoundMsg)
+	default:
+		h.writeError(w, ctx, http.StatusInternalServerError, fallbackMsg)
+	}
 }
