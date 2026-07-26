@@ -55,8 +55,7 @@ type createRequest struct {
 
 func (h *Handler) create(w http.ResponseWriter, r *http.Request) {
 	var req createRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+	if !h.decodeJSON(w, r, &req) {
 		return
 	}
 
@@ -85,8 +84,7 @@ type updateRequest struct {
 func (h *Handler) update(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	var req updateRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+	if !h.decodeJSON(w, r, &req) {
 		return
 	}
 	n, err := h.svc.UpdateText(r.Context(), id, req.Text)
@@ -135,6 +133,16 @@ func (h *Handler) count(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.writeJSON(w, r.Context(), http.StatusOK, countResponse{Count: n})
+}
+
+// decodeJSON декодирует тело запроса в v. При ошибке сама пишет 400 и
+// возвращает false — вызывающему остаётся только вернуться из хендлера.
+func (h *Handler) decodeJSON(w http.ResponseWriter, r *http.Request, v any) bool {
+	if err := json.NewDecoder(r.Body).Decode(v); err != nil {
+		h.writeError(w, r.Context(), http.StatusBadRequest, "invalid json body")
+		return false
+	}
+	return true
 }
 
 // writeJSON сериализует значение и пишет его с заданным статусом.
