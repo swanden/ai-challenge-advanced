@@ -402,3 +402,20 @@ Opus 4.8.
 | GET    | `/`            | статика веб-интерфейса (`internal/httpapi/web`) | 200, 404               |
 
 Тело ошибки во всех случаях — `{"error": "сообщение"}`.
+
+## 14. Команды запуска и проверок
+
+Из корня репозитория (`ai-challenge-advanced`):
+
+```
+# запуск сервиса (слушает :8080)
+go run ./week-1/task-5/notes-api/cmd/notes-api
+
+# полный набор проверок
+go build ./week-1/task-5/notes-api/...
+go vet ./week-1/task-5/notes-api/...
+gofmt -l week-1/task-5
+go test ./week-1/task-5/notes-api/... -count=1
+```
+
+`gofmt -l` должен не выводить ничего — иначе есть неотформатированные файлы.
