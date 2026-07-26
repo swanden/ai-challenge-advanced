@@ -112,6 +112,21 @@ func TestMemoryRepoDelete(t *testing.T) {
 	}
 }
 
+func TestMemoryRepoListEmpty(t *testing.T) {
+	repo := NewMemoryRepo()
+
+	got, err := repo.List(context.Background())
+	if err != nil {
+		t.Fatalf("List() err = %v, want nil", err)
+	}
+	if got == nil {
+		t.Fatal("List() = nil, want non-nil empty slice")
+	}
+	if len(got) != 0 {
+		t.Errorf("List() len = %d, want 0", len(got))
+	}
+}
+
 func TestMemoryRepoList(t *testing.T) {
 	repo := NewMemoryRepo()
 	ctx := context.Background()
