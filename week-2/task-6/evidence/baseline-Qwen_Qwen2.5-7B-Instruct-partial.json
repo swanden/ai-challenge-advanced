@@ -1,0 +1,129 @@
+{
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "base_url": "https://router.huggingface.co/v1",
+  "started_at": "2026-07-29T00:00:00Z",
+  "system_prompt": "Ты маршрутизатор задач репозитория notes-api. Прочитай формулировку задачи и ответь ровно одним классом из списка: bug-fix, feature, refactor, testing, docs, research, review, contract-change. Ответ — одно слово, без пояснений.",
+  "requested": 10,
+  "note": "Восстановлено из вывода терминала: клиент той версии брал первые 10 примеров eval подряд и завершался при первой ошибке, не сохраняя отчёт. Поэтому выборка покрывает только пять классов из восьми, а задержки и токены не зафиксированы. Десятый вызов не выполнен: HTTP 402, исчерпаны включённые месячные кредиты Hugging Face Inference Providers.",
+  "results": [
+    {
+      "index": 1,
+      "user": "Хендлер удаления отвечает StatusOK вместо StatusNoContent, хотя в описании API стоит 204",
+      "expected": "bug-fix",
+      "raw": "bug-fix",
+      "predicted": "bug-fix",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 2,
+      "user": "Сервер не дожидается активных запросов при остановке, graceful shutdown завершает процесс сразу",
+      "expected": "bug-fix",
+      "raw": "bug-fix",
+      "predicted": "bug-fix",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 3,
+      "user": "Отдавать на создание заметки 201 и заголовок Location вместо нынешнего 200",
+      "expected": "contract-change",
+      "raw": "bug-fix",
+      "predicted": "bug-fix",
+      "correct": false,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 4,
+      "user": "Перенести создание заметки с POST /notes на POST /api/v1/notes, старый путь убрать",
+      "expected": "contract-change",
+      "raw": "refactor",
+      "predicted": "refactor",
+      "correct": false,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 5,
+      "user": "Список правил в CLAUDE.md не упоминает эндпоинты, добавленные задачами T-07, T-08, T-09",
+      "expected": "docs",
+      "raw": "docs",
+      "predicted": "docs",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 6,
+      "user": "Перенеси в README таблицу кодов ответов, сейчас их приходится искать по коду",
+      "expected": "docs",
+      "raw": "docs",
+      "predicted": "docs",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 7,
+      "user": "Добавить флаг -addr, чтобы адрес прослушивания задавался при запуске, а не константой",
+      "expected": "feature",
+      "raw": "feature",
+      "predicted": "feature",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 8,
+      "user": "Сделай ограничение размера тела запроса, чтобы гигабайтный JSON не читался в память целиком",
+      "expected": "feature",
+      "raw": "feature",
+      "predicted": "feature",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    {
+      "index": 9,
+      "user": "Разбор тела запроса в хендлерах создания и обновления дублируется",
+      "expected": "refactor",
+      "raw": "refactor",
+      "predicted": "refactor",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    }
+  ],
+  "failures": [
+    {
+      "index": 10,
+      "expected": "refactor",
+      "error": "HTTP 402: You have depleted your monthly included credits."
+    }
+  ],
+  "accuracy": 0.7778,
+  "format_compliance": 1.0,
+  "avg_latency_ms": 0,
+  "avg_completion_tokens": 0
+}
