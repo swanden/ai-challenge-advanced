@@ -3,25 +3,29 @@
 # что запускается, сопровождая всё подписями на экране — расчёт на запись
 # без голоса.
 #
+# По умолчанию шаг делается по Enter: так темпом управляешь ты, и экран
+# никогда не выглядит зависшим. Таймер включается отдельным флагом.
+#
 # Запускать из корня репозитория:
 #
 #   bash week-2/task-6/scripts/demo.sh
 #
 # Флаги:
-#   -s N     множитель пауз, по умолчанию 1 (например -s 1.5 — медленнее)
-#   -m       ручной режим: вместо пауз ждёт Enter
+#   -t       по таймеру вместо Enter; во время ожидания видно обратный отсчёт
+#   -s N     множитель пауз для таймера, по умолчанию 1 (например -s 1.5 медленнее)
 #   -n       не выполнять прогоны (без Ollama и сети), только показ файлов
 
 set -u
 
 SPEED=1
-MANUAL=0
+MANUAL=1
 RUN=1
 ROOT="week-2/task-6"
 
-while getopts "s:mn" opt; do
+while getopts "s:tmn" opt; do
     case "$opt" in
         s) SPEED="$OPTARG" ;;
+        t) MANUAL=0 ;;
         m) MANUAL=1 ;;
         n) RUN=0 ;;
         *) echo "неизвестный флаг" >&2; exit 2 ;;
@@ -37,13 +41,23 @@ fi
 B=$(printf '\033[1m'); DIM=$(printf '\033[2m'); OFF=$(printf '\033[0m')
 CYAN=$(printf '\033[36m'); YELLOW=$(printf '\033[33m')
 
+# pause ждёт перед следующим экраном. В ручном режиме — Enter, в режиме
+# таймера — обратный отсчёт, который затем стирается: без него пауза
+# неотличима от зависшего скрипта.
 pause() {
     if [ "$MANUAL" = "1" ]; then
-        printf '\n%s[Enter]%s' "$DIM" "$OFF"
+        printf '\n%s— дальше по Enter —%s' "$DIM" "$OFF"
         read -r _
-    else
-        sleep "$(awk "BEGIN{printf \"%.1f\", $1 * $SPEED}")"
+        return
     fi
+    secs=$(awk "BEGIN{printf \"%d\", ($1 * $SPEED) + 0.5}")
+    [ "$secs" -lt 1 ] && return
+    while [ "$secs" -gt 0 ]; do
+        printf '\r%s   %s%s ' "$DIM" "$secs" "$OFF"
+        sleep 1
+        secs=$((secs - 1))
+    done
+    printf '\r          \r'
 }
 
 section() {

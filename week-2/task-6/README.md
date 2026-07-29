@@ -360,10 +360,10 @@ go run ./week-2/task-6/cmd/finetune
 валидатор и baseline вживую, так что комментировать голосом ничего не нужно:
 
 ```sh
-bash week-2/task-6/scripts/demo.sh        # целиком, около трёх с половиной минут
-bash week-2/task-6/scripts/demo.sh -n     # без прогонов, посмотреть тайминги
-bash week-2/task-6/scripts/demo.sh -m     # вместо пауз ждёт Enter
-bash week-2/task-6/scripts/demo.sh -s 1.5 # все паузы в полтора раза длиннее
+bash week-2/task-6/scripts/demo.sh          # шаг по Enter, темпом управляешь сам
+bash week-2/task-6/scripts/demo.sh -t       # по таймеру, с обратным отсчётом
+bash week-2/task-6/scripts/demo.sh -t -s 1.5 # таймер в полтора раза медленнее
+bash week-2/task-6/scripts/demo.sh -n       # без прогонов, только показ файлов
 ```
 
 ## Результаты
