@@ -1,0 +1,547 @@
+{
+  "base_url": "http://localhost:11434/v1",
+  "train_path": "week-2/task-6/dataset/train.jsonl",
+  "train_size": 64,
+  "started_at": "2026-08-01T13:57:50.72115+03:00",
+  "note": "маленькая LLM",
+  "runs": [
+    {
+      "kind": "tiny",
+      "params": {
+        "Kind": "tiny",
+        "K": 5,
+        "MinSimilarity": 0.25,
+        "MinVotes": 0.6,
+        "NGramMin": 3,
+        "NGramMax": 4
+      },
+      "big_model": "qwen2.5:7b",
+      "started_at": "2026-08-01T13:57:50.721152+03:00",
+      "records": [
+        {
+          "id": "eval-01",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9993999905796154,
+            "latency_us": 9711000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-02",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.6125293929175403,
+            "latency_us": 163000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-03",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.9999645948420485,
+            "latency_us": 282000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-04",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9999629259605394,
+            "latency_us": 165000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-05",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "OK",
+            "confidence": 0.9944948555928034,
+            "latency_us": 171000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "docs",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-06",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "OK",
+            "confidence": 0.9994136094952142,
+            "latency_us": 155000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "docs",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-07",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.9937128424569638,
+            "latency_us": 156000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-08",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9912762789406369,
+            "latency_us": 179000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-09",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9999853372620545,
+            "latency_us": 159000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-10",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.99998259544782,
+            "latency_us": 181000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-11",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.5234591991675419,
+            "reason": "вероятность 0.52 ниже порога 0.60",
+            "latency_us": 154000,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 196,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "eval-12",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "research",
+            "status": "OK",
+            "confidence": 0.9866601225552373,
+            "latency_us": 153000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "research",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-13",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9997485308318539,
+            "latency_us": 165000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-14",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9675741786649668,
+            "latency_us": 166000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-15",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.823144513520975,
+            "latency_us": 167000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-16",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.8213120083579201,
+            "latency_us": 158000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-01",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.9999902248378308,
+            "latency_us": 157000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-02",
+          "group": "borderline",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9998979570542509,
+            "latency_us": 165000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-03",
+          "group": "borderline",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9987343074584152,
+            "latency_us": 179000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-04",
+          "group": "borderline",
+          "micro": {
+            "class": "docs",
+            "status": "OK",
+            "confidence": 0.9993446469239134,
+            "latency_us": 167000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "docs",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-05",
+          "group": "borderline",
+          "micro": {
+            "class": "testing",
+            "status": "OK",
+            "confidence": 0.988233030149077,
+            "latency_us": 153000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "testing",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-06",
+          "group": "borderline",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.9999632835471053,
+            "latency_us": 178000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-07",
+          "group": "borderline",
+          "micro": {
+            "class": "research",
+            "status": "OK",
+            "confidence": 0.9991198181932426,
+            "latency_us": 155000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "research",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-08",
+          "group": "borderline",
+          "micro": {
+            "class": "testing",
+            "status": "OK",
+            "confidence": 0.9995307922489394,
+            "latency_us": 157000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "testing",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-01",
+          "group": "noisy",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.4363023331420732,
+            "reason": "вероятность 0.44 ниже порога 0.60",
+            "latency_us": 196000,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 198,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "noisy-02",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.8184094381591891,
+            "latency_us": 163000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-03",
+          "group": "noisy",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.6968494155498715,
+            "latency_us": 197000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-04",
+          "group": "noisy",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.9999989271164011,
+            "latency_us": 160000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-05",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9223563180885643,
+            "latency_us": 166000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-06",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9985360704214978,
+            "latency_us": 179000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "noisy-07",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "OK",
+            "confidence": 0.9983641257562922,
+            "latency_us": 169000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "bug-fix",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "noisy-08",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "research",
+            "status": "OK",
+            "confidence": 0.9062011223888599,
+            "latency_us": 171000,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "research",
+          "decided_by": "micro",
+          "correct": false
+        }
+      ],
+      "totals": {
+        "входов": 32,
+        "входов с известным ответом": 19,
+        "вызовов большой модели": 2,
+        "задержка llm суммарно мс": 394,
+        "задержка micro суммарно мкс": 14997000,
+        "обработал micro": 30,
+        "решено micro (с известным ответом)": 18,
+        "средняя задержка на вход мс": 480.96875,
+        "точность llm на переданных": 0,
+        "точность micro на своих": 0.5,
+        "точность общая": 0.47368421052631576,
+        "ушло в fallback": 2,
+        "ушло наверх (с известным ответом)": 1,
+        "эскалаций, где micro был бы прав": 0
+      }
+    }
+  ]
+}

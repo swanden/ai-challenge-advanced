@@ -1,0 +1,871 @@
+{
+  "base_url": "http://localhost:11434/v1",
+  "train_path": "week-2/task-6/dataset/train.jsonl",
+  "train_size": 64,
+  "started_at": "2026-08-01T13:57:06.394591+03:00",
+  "note": "эмбеддинги",
+  "runs": [
+    {
+      "kind": "embed",
+      "params": {
+        "Kind": "embed",
+        "K": 5,
+        "MinSimilarity": 0.25,
+        "MinVotes": 0.6,
+        "NGramMin": 3,
+        "NGramMax": 4
+      },
+      "big_model": "qwen2.5:7b",
+      "started_at": "2026-08-01T13:57:08.270176+03:00",
+      "records": [
+        {
+          "id": "eval-01",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "refactor",
+            "status": "OK",
+            "confidence": 0.6054372904949405,
+            "neighbours": [
+              "0.74 refactor: В internal/httpapi/handler.go сопоставле",
+              "0.71 refactor: Порт и таймаут чтения заголовков зашиты ",
+              "0.71 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.71 feature: Нет эндпоинта количества заметок",
+              "0.71 bug-fix: Service.UpdateText не обрезает пробелы п"
+            ],
+            "latency_us": 1038,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "refactor",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-02",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.39217944119682363,
+            "reason": "соседи разошлись: 0.39 голосов при пороге 0.60",
+            "neighbours": [
+              "0.77 docs: Не задокументированы команды запуска и п",
+              "0.76 review: Оцени, не нарушает ли этот диф направлен",
+              "0.74 research: Объясни, почему фильтрация по подстроке ",
+              "0.74 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.73 feature: Хочу видеть в логе длительность обработк"
+            ],
+            "latency_us": 1000,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 311,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "feature"
+        },
+        {
+          "id": "eval-03",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.40702712725671203,
+            "reason": "соседи разошлись: 0.41 голосов при пороге 0.60",
+            "neighbours": [
+              "0.73 feature: Нет эндпоинта количества заметок",
+              "0.72 docs: Не задокументированы команды запуска и п",
+              "0.71 feature: Хочу видеть в логе длительность обработк",
+              "0.69 research: Почему на пустом тексте возвращается 400",
+              "0.69 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 2982,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 201,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "eval-04",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.39908732934696806,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.83 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.82 refactor: Порт и таймаут чтения заголовков зашиты ",
+              "0.81 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.80 refactor: Приведи порядок объявлений в note.go к т",
+              "0.79 testing: Покрытие internal/note семь процентов, н"
+            ],
+            "latency_us": 3806,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 200,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "eval-05",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.40739731984193905,
+            "reason": "соседи разошлись: 0.41 голосов при пороге 0.60",
+            "neighbours": [
+              "0.84 docs: CLAUDE.md описывает слой storage не так,",
+              "0.83 review: Проверь, соответствует ли новый хендлер ",
+              "0.79 docs: Опиши в CLAUDE.md правило про context.Co",
+              "0.77 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.77 feature: Нужен эндпоинт, который отдаёт время ста"
+            ],
+            "latency_us": 1019,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 224,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-06",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "OK",
+            "confidence": 0.6131253843257287,
+            "neighbours": [
+              "0.85 docs: Опиши в README, какие переменные окружен",
+              "0.84 docs: Напиши в README раздел о том, как добавл",
+              "0.79 feature: Добавить в лог причину отказа при валида",
+              "0.78 docs: Добавь в docs короткую схему слоёв и нап",
+              "0.77 feature: Нужен эндпоинт, который отдаёт время ста"
+            ],
+            "latency_us": 3336,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "docs",
+          "decided_by": "micro",
+          "correct": true
+        },
+        {
+          "id": "eval-07",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "research",
+            "status": "UNSURE",
+            "confidence": 0.39678923509036707,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.75 docs: Не задокументированы команды запуска и п",
+              "0.74 contract-change: Service.Create должен принимать автора з",
+              "0.74 research: Объясни, почему фильтрация по подстроке ",
+              "0.74 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.73 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 3178,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 189,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "research"
+        },
+        {
+          "id": "eval-08",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.21146740904441338,
+            "reason": "соседи разошлись: 0.21 голосов при пороге 0.60",
+            "neighbours": [
+              "0.85 refactor: Собери формирование JSON-ответа в один в",
+              "0.83 contract-change: Переименовать в JSON-ответе поле text в ",
+              "0.78 feature: Хочу видеть в логе длительность обработк",
+              "0.78 review: Оцени, не нарушает ли этот диф направлен",
+              "0.76 docs: Не задокументированы команды запуска и п"
+            ],
+            "latency_us": 1026,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 236,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "eval-09",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.40192901788503854,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.86 feature: Хочу видеть в логе длительность обработк",
+              "0.83 docs: Не задокументированы команды запуска и п",
+              "0.83 research: Что происходит при удалении заметки, кот",
+              "0.82 research: Как контекст прокладывается от хендлера ",
+              "0.81 feature: Нужен эндпоинт, который отдаёт время ста"
+            ],
+            "latency_us": 3347,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 199,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "feature"
+        },
+        {
+          "id": "eval-10",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "research",
+            "status": "UNSURE",
+            "confidence": 0.21074422508357377,
+            "reason": "соседи разошлись: 0.21 голосов при пороге 0.60",
+            "neighbours": [
+              "0.78 research: Что в internal/storage не покрыто тестам",
+              "0.76 docs: CLAUDE.md описывает слой storage не так,",
+              "0.72 testing: MemoryRepo не покрыт тестами",
+              "0.72 bug-fix: В логах каждое обращение печатается дваж",
+              "0.72 review: Стоит ли принимать этот патч: он тянет в"
+            ],
+            "latency_us": 4523,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 234,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "research"
+        },
+        {
+          "id": "eval-11",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "review",
+            "status": "UNSURE",
+            "confidence": 0.5743331906313643,
+            "reason": "соседи разошлись: 0.57 голосов при пороге 0.60",
+            "neighbours": [
+              "0.87 contract-change: Переименовать в JSON-ответе поле text в ",
+              "0.86 refactor: Собери формирование JSON-ответа в один в",
+              "0.79 review: Глянь диф рефакторинга маппинга ошибок, ",
+              "0.77 review: Оцени, не нарушает ли этот диф направлен",
+              "0.77 review: Стоит ли принимать этот патч: он тянет в"
+            ],
+            "latency_us": 4150,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 190,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "review"
+        },
+        {
+          "id": "eval-12",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.6000786904753315,
+            "neighbours": [
+              "0.84 feature: Хочу видеть в логе длительность обработк",
+              "0.83 review: Оцени, не нарушает ли этот диф направлен",
+              "0.82 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.81 research: Что происходит при удалении заметки, кот",
+              "0.81 feature: Нет эндпоинта количества заметок"
+            ],
+            "latency_us": 2609,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "eval-13",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "review",
+            "status": "UNSURE",
+            "confidence": 0.3965058555022299,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.75 research: Что происходит при удалении заметки, кот",
+              "0.75 refactor: Приведи порядок объявлений в note.go к т",
+              "0.74 review: Стоит ли принимать этот патч: он тянет в",
+              "0.74 docs: Не задокументированы команды запуска и п",
+              "0.73 review: Оцени, не нарушает ли этот диф направлен"
+            ],
+            "latency_us": 2919,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 202,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "review"
+        },
+        {
+          "id": "eval-14",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "review",
+            "status": "UNSURE",
+            "confidence": 0.38390675081353104,
+            "reason": "соседи разошлись: 0.38 голосов при пороге 0.60",
+            "neighbours": [
+              "0.82 research: Что в internal/storage не покрыто тестам",
+              "0.81 docs: CLAUDE.md описывает слой storage не так,",
+              "0.74 review: Оцени, не нарушает ли этот диф направлен",
+              "0.73 review: Стоит ли принимать этот патч: он тянет в",
+              "0.73 contract-change: Список заметок должен отдаваться объекто"
+            ],
+            "latency_us": 4634,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 201,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "review"
+        },
+        {
+          "id": "eval-15",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "review",
+            "status": "UNSURE",
+            "confidence": 0.3957947231622744,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.76 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.74 feature: Нет эндпоинта количества заметок",
+              "0.74 docs: Напиши в README раздел о том, как добавл",
+              "0.74 review: Оцени, не нарушает ли этот диф направлен",
+              "0.73 review: Стоит ли принимать этот патч: он тянет в"
+            ],
+            "latency_us": 2998,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 188,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "review"
+        },
+        {
+          "id": "eval-16",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "testing",
+            "status": "UNSURE",
+            "confidence": 0.40546835273833237,
+            "reason": "соседи разошлись: 0.41 голосов при пороге 0.60",
+            "neighbours": [
+              "0.85 docs: В smoke-scenarios.md нет описания, откуд",
+              "0.82 testing: Прогони smoke-сценарии из docs/smoke-sce",
+              "0.81 testing: Нативный prompt() во фронтенде не виден ",
+              "0.77 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.77 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 3813,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 185,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "testing"
+        },
+        {
+          "id": "border-01",
+          "group": "borderline",
+          "micro": {
+            "class": "contract-change",
+            "status": "UNSURE",
+            "confidence": 0.39714926537310014,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.80 contract-change: Добавить в GET /notes параметр q для фил",
+              "0.79 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.79 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.78 refactor: Приведи порядок объявлений в note.go к т",
+              "0.76 contract-change: Список заметок должен отдаваться объекто"
+            ],
+            "latency_us": 2758,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 185,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "contract-change"
+        },
+        {
+          "id": "border-02",
+          "group": "borderline",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.38471677309776214,
+            "reason": "соседи разошлись: 0.38 голосов при пороге 0.60",
+            "neighbours": [
+              "0.88 contract-change: Service.Create должен принимать автора з",
+              "0.76 testing: Service.UpdateText не покрыт тестами",
+              "0.75 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.74 bug-fix: При обновлении текста перезаписывается C",
+              "0.74 research: Зачем в Service интерфейс Clock и кто ег"
+            ],
+            "latency_us": 1541,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 205,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "border-03",
+          "group": "borderline",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.395681044505704,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.89 testing: Service.UpdateText не покрыт тестами",
+              "0.87 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.85 review: Вот две генерации теста на UpdateText, g",
+              "0.78 bug-fix: При обновлении текста перезаписывается C",
+              "0.78 review: Оцени, не нарушает ли этот диф направлен"
+            ],
+            "latency_us": 3028,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 223,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "border-04",
+          "group": "borderline",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.4219305127575035,
+            "reason": "соседи разошлись: 0.42 голосов при пороге 0.60",
+            "neighbours": [
+              "0.87 docs: Напиши в README раздел о том, как добавл",
+              "0.87 docs: Опиши в README, какие переменные окружен",
+              "0.81 research: Объясни, почему фильтрация по подстроке ",
+              "0.79 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.79 review: Оцени, не нарушает ли этот диф направлен"
+            ],
+            "latency_us": 3574,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 224,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "docs"
+        },
+        {
+          "id": "border-05",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.6044230236736748,
+            "neighbours": [
+              "0.81 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.81 feature: Добавить в лог причину отказа при валида",
+              "0.79 review: Стоит ли принимать этот патч: он тянет в",
+              "0.78 testing: Нужен тест, который ловит регресс по рег",
+              "0.78 feature: Нет эндпоинта количества заметок"
+            ],
+            "latency_us": 3031,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-06",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.40161942489801844,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.76 feature: Хочу видеть в логе длительность обработк",
+              "0.74 docs: Не задокументированы команды запуска и п",
+              "0.74 research: Что происходит при удалении заметки, кот",
+              "0.73 research: Как контекст прокладывается от хендлера ",
+              "0.73 feature: Нужен эндпоинт, который отдаёт время ста"
+            ],
+            "latency_us": 2877,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 236,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "border-07",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.40869717249222415,
+            "reason": "соседи разошлись: 0.41 голосов при пороге 0.60",
+            "neighbours": [
+              "0.84 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.82 feature: Добавить в лог причину отказа при валида",
+              "0.81 review: Оцени, не нарушает ли этот диф направлен",
+              "0.81 review: Стоит ли принимать этот патч: он тянет в",
+              "0.79 research: Объясни, почему фильтрация по подстроке "
+            ],
+            "latency_us": 2705,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 200,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "border-08",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.6010867542920829,
+            "neighbours": [
+              "0.84 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.82 refactor: Приведи порядок объявлений в note.go к т",
+              "0.79 feature: Нет эндпоинта количества заметок",
+              "0.78 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.78 bug-fix: GET /notes/{id} на неизвестном идентифик"
+            ],
+            "latency_us": 3123,
+            "calls": 1
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-01",
+          "group": "noisy",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.40362679615950553,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.63 feature: Нет эндпоинта количества заметок",
+              "0.62 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.62 contract-change: Service.Create должен принимать автора з",
+              "0.62 review: Насколько плохо, что я вынес декодирован",
+              "0.61 docs: Не задокументированы команды запуска и п"
+            ],
+            "latency_us": 3737,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 195,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "noisy-02",
+          "group": "noisy",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.20141594119635167,
+            "reason": "соседи разошлись: 0.20 голосов при пороге 0.60",
+            "neighbours": [
+              "0.57 refactor: Заглушки Clock и IDGenerator скопированы",
+              "0.57 contract-change: IDGenerator должен возвращать ошибку — п",
+              "0.57 docs: CLAUDE.md описывает слой storage не так,",
+              "0.56 feature: Нужен middleware, который проставляет re",
+              "0.56 research: Почему на пустом тексте возвращается 400"
+            ],
+            "latency_us": 2650,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 204,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "noisy-03",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.3902304750569994,
+            "reason": "соседи разошлись: 0.39 голосов при пороге 0.60",
+            "neighbours": [
+              "0.71 refactor: Порт и таймаут чтения заголовков зашиты ",
+              "0.65 bug-fix: GET /notes/{id} на неизвестном идентифик",
+              "0.64 docs: В README-project.md нет описания API",
+              "0.63 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.62 bug-fix: GET /notes на пустом хранилище возвращае"
+            ],
+            "latency_us": 4311,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 195,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-04",
+          "group": "noisy",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.4007224695326396,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.75 feature: Добавить в лог причину отказа при валида",
+              "0.75 docs: Не задокументированы команды запуска и п",
+              "0.75 review: Оцени, не нарушает ли этот диф направлен",
+              "0.74 feature: Хочу видеть в логе длительность обработк",
+              "0.73 review: Стоит ли принимать этот патч: он тянет в"
+            ],
+            "latency_us": 2666,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 184,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "noisy-05",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.3982283417666582,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.96 testing: Service.UpdateText не покрыт тестами",
+              "0.94 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.83 review: Вот две генерации теста на UpdateText, g",
+              "0.77 contract-change: Service.Create должен принимать автора з",
+              "0.75 bug-fix: При обновлении текста перезаписывается C"
+            ],
+            "latency_us": 3466,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 199,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-06",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.400088995062345,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.72 research: Почему на пустом тексте возвращается 400",
+              "0.71 refactor: В internal/httpapi/handler.go сопоставле",
+              "0.70 feature: Нет эндпоинта количества заметок",
+              "0.70 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.69 contract-change: Repository должен уметь отдавать страниц"
+            ],
+            "latency_us": 3067,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "noisy-07",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.44372781953532836,
+            "reason": "соседи разошлись: 0.44 голосов при пороге 0.60",
+            "neighbours": [
+              "0.74 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.61 bug-fix: GET /notes/{id} на неизвестном идентифик",
+              "0.61 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.55 contract-change: Добавить в GET /notes параметр q для фил",
+              "0.53 refactor: Порт и таймаут чтения заголовков зашиты "
+            ],
+            "latency_us": 3369,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 201,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-08",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "research",
+            "status": "UNSURE",
+            "confidence": 0.39689642338844144,
+            "reason": "соседи разошлись: 0.40 голосов при пороге 0.60",
+            "neighbours": [
+              "0.83 review: Оцени, не нарушает ли этот диф направлен",
+              "0.81 feature: Хочу видеть в логе длительность обработк",
+              "0.80 research: Объясни, почему фильтрация по подстроке ",
+              "0.80 docs: Не задокументированы команды запуска и п",
+              "0.80 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 2936,
+            "calls": 1
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "research"
+        }
+      ],
+      "totals": {
+        "входов": 32,
+        "входов с известным ответом": 19,
+        "вызовов большой модели": 27,
+        "задержка llm суммарно мс": 5681,
+        "задержка micro суммарно мкс": 95217,
+        "обработал micro": 5,
+        "решено micro (с известным ответом)": 3,
+        "средняя задержка на вход мс": 180.50678125,
+        "точность llm на переданных": 0.5625,
+        "точность micro на своих": 0.3333333333333333,
+        "точность общая": 0.5263157894736842,
+        "ушло в fallback": 27,
+        "ушло наверх (с известным ответом)": 16,
+        "эскалаций, где micro был бы прав": 5
+      }
+    }
+  ]
+}

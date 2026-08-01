@@ -1,0 +1,1453 @@
+{
+  "base_url": "http://localhost:11434/v1",
+  "train_path": "week-2/task-6/dataset/train.jsonl",
+  "train_size": 64,
+  "started_at": "2026-08-01T14:00:45.301223+03:00",
+  "note": "n-граммы, с точкой отсчёта",
+  "runs": [
+    {
+      "kind": "llm-only",
+      "params": {
+        "Kind": "",
+        "K": 0,
+        "MinSimilarity": 0,
+        "MinVotes": 0,
+        "NGramMin": 0,
+        "NGramMax": 0
+      },
+      "big_model": "qwen2.5:7b",
+      "started_at": "2026-08-01T14:00:45.301223+03:00",
+      "records": [
+        {
+          "id": "eval-01",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 209,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-02",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 202,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-03",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 199,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-04",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 206,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-05",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 232,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-06",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 183,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-07",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 184,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-08",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-09",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 196,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-10",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 236,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-11",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 186,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-12",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "research",
+          "llm_latency_ms": 185,
+          "final": "research",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-13",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 201,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-14",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 201,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "eval-15",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 191,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "eval-16",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 187,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "border-01",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 188,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-02",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 204,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-03",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 232,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-04",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 216,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-05",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 197,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-06",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 238,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-07",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 198,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "border-08",
+          "group": "borderline",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 192,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-01",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 188,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-02",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 203,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-03",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 195,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-04",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 189,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-05",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 205,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-06",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 242,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "noisy-07",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 207,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true
+        },
+        {
+          "id": "noisy-08",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "",
+            "status": "",
+            "confidence": 0,
+            "latency_us": 0,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 237,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true
+        }
+      ],
+      "totals": {
+        "входов": 32,
+        "входов с известным ответом": 19,
+        "вызовов большой модели": 32,
+        "задержка llm суммарно мс": 6564,
+        "задержка micro суммарно мс": 0,
+        "обработал micro": 0,
+        "средняя задержка llm мс": 205.125,
+        "средняя задержка micro мс": 0,
+        "средняя задержка на вход мс": 205.125,
+        "точность llm на переданных": 0.631578947368421,
+        "точность общая": 0.631578947368421,
+        "ушло в fallback": 32,
+        "ушло наверх (с известным ответом)": 19,
+        "эскалаций, где micro был бы прав": 0
+      }
+    },
+    {
+      "kind": "ngram",
+      "params": {
+        "Kind": "ngram",
+        "K": 5,
+        "MinSimilarity": 0.25,
+        "MinVotes": 0.6,
+        "NGramMin": 3,
+        "NGramMax": 4
+      },
+      "big_model": "qwen2.5:7b",
+      "started_at": "2026-08-01T14:00:51.888212+03:00",
+      "records": [
+        {
+          "id": "eval-01",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.41574682189414947,
+            "reason": "ближайший пример непохож: 0.18 при пороге 0.25",
+            "neighbours": [
+              "0.18 docs: В README-project.md нет описания API",
+              "0.17 research: Что происходит при удалении заметки, кот",
+              "0.12 bug-fix: При обновлении текста перезаписывается C",
+              "0.11 review: Проверь, соответствует ли новый хендлер ",
+              "0.10 docs: В smoke-scenarios.md нет описания, откуд"
+            ],
+            "latency_us": 626,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 204,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-02",
+          "group": "correct",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "testing",
+            "status": "UNSURE",
+            "confidence": 0.4283006252345883,
+            "reason": "ближайший пример непохож: 0.10 при пороге 0.25",
+            "neighbours": [
+              "0.10 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.10 testing: Нативный prompt() во фронтенде не виден ",
+              "0.10 testing: Проверь, что тесты остаются зелёными под",
+              "0.08 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.07 review: Оцени, не нарушает ли этот диф направлен"
+            ],
+            "latency_us": 210,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 207,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "testing"
+        },
+        {
+          "id": "eval-03",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "contract-change",
+            "status": "UNSURE",
+            "confidence": 0.4863809344202232,
+            "reason": "ближайший пример непохож: 0.19 при пороге 0.25",
+            "neighbours": [
+              "0.19 contract-change: Список заметок должен отдаваться объекто",
+              "0.14 contract-change: Ошибки отдавать объектом {\"error\":{\"code",
+              "0.12 research: Что происходит при удалении заметки, кот",
+              "0.11 refactor: Порт и таймаут чтения заголовков зашиты ",
+              "0.11 research: Найди все места, где внутри слоёв создаё"
+            ],
+            "latency_us": 844,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 200,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "contract-change"
+        },
+        {
+          "id": "eval-04",
+          "group": "correct",
+          "known_class": "contract-change",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.3122679321708436,
+            "reason": "ближайший пример непохож: 0.18 при пороге 0.25",
+            "neighbours": [
+              "0.18 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.11 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.11 research: Найди все места, где внутри слоёв создаё",
+              "0.10 refactor: В internal/httpapi/handler.go сопоставле",
+              "0.09 contract-change: Добавить в GET /notes параметр q для фил"
+            ],
+            "latency_us": 769,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 205,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "eval-05",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.3849223966184354,
+            "reason": "ближайший пример непохож: 0.20 при пороге 0.25",
+            "neighbours": [
+              "0.20 feature: Нет эндпоинта количества заметок",
+              "0.19 review: Проверь, соответствует ли новый хендлер ",
+              "0.18 docs: Опиши в CLAUDE.md правило про context.Co",
+              "0.13 docs: Напиши в README раздел о том, как добавл",
+              "0.12 contract-change: Список заметок должен отдаваться объекто"
+            ],
+            "latency_us": 859,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 222,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-06",
+          "group": "correct",
+          "known_class": "docs",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.5004716468141713,
+            "reason": "ближайший пример непохож: 0.24 при пороге 0.25",
+            "neighbours": [
+              "0.24 feature: Добавить в лог причину отказа при валида",
+              "0.14 docs: Опиши в README, какие переменные окружен",
+              "0.13 refactor: Собери формирование JSON-ответа в один в",
+              "0.12 docs: Напиши в README раздел о том, как добавл",
+              "0.11 docs: В README-project.md нет описания API"
+            ],
+            "latency_us": 847,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "docs",
+          "llm_latency_ms": 187,
+          "final": "docs",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-07",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.4525316117934465,
+            "reason": "ближайший пример непохож: 0.16 при пороге 0.25",
+            "neighbours": [
+              "0.16 docs: Не задокументированы команды запуска и п",
+              "0.12 docs: В smoke-scenarios.md нет описания, откуд",
+              "0.12 contract-change: Добавить в GET /notes параметр q для фил",
+              "0.12 feature: Добавить в лог причину отказа при валида",
+              "0.10 research: Объясни, почему фильтрация по подстроке "
+            ],
+            "latency_us": 759,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 189,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-08",
+          "group": "correct",
+          "known_class": "feature",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.4418582928455313,
+            "reason": "ближайший пример непохож: 0.14 при пороге 0.25",
+            "neighbours": [
+              "0.14 refactor: Собери формирование JSON-ответа в один в",
+              "0.11 feature: Хочу видеть в логе длительность обработк",
+              "0.09 docs: В smoke-scenarios.md нет описания, откуд",
+              "0.08 bug-fix: Валидация длины срабатывает не на той гр",
+              "0.08 refactor: Переименуй переменную n в хендлерах во ч"
+            ],
+            "latency_us": 746,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 239,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "eval-09",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.5006224969817445,
+            "reason": "соседи разошлись: 0.50 голосов при пороге 0.60",
+            "neighbours": [
+              "0.27 refactor: В internal/httpapi/handler.go сопоставле",
+              "0.16 bug-fix: При обновлении текста перезаписывается C",
+              "0.14 feature: Хочу видеть в логе длительность обработк",
+              "0.13 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.09 review: Проверь, соответствует ли новый хендлер "
+            ],
+            "latency_us": 838,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 205,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "eval-10",
+          "group": "correct",
+          "known_class": "refactor",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.3571845875579031,
+            "reason": "ближайший пример непохож: 0.16 при пороге 0.25",
+            "neighbours": [
+              "0.16 review: Глянь диф рефакторинга маппинга ошибок, ",
+              "0.12 docs: CLAUDE.md описывает слой storage не так,",
+              "0.12 testing: MemoryRepo не покрыт тестами",
+              "0.12 research: Что в internal/storage не покрыто тестам",
+              "0.10 docs: Добавь в docs короткую схему слоёв и нап"
+            ],
+            "latency_us": 584,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-11",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.4595157905304267,
+            "reason": "ближайший пример непохож: 0.20 при пороге 0.25",
+            "neighbours": [
+              "0.20 refactor: Собери формирование JSON-ответа в один в",
+              "0.16 research: Почему на пустом тексте возвращается 400",
+              "0.12 refactor: Приведи порядок объявлений в note.go к т",
+              "0.11 bug-fix: Фильтр списка по подстроке чувствителен ",
+              "0.10 contract-change: Убрать из ответа поле created_at, фронте"
+            ],
+            "latency_us": 919,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 189,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "eval-12",
+          "group": "correct",
+          "known_class": "research",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.5287160936062557,
+            "reason": "ближайший пример непохож: 0.22 при пороге 0.25",
+            "neighbours": [
+              "0.22 bug-fix: MemoryRepo.Get отдаёт заметку с другим и",
+              "0.16 bug-fix: GET /notes/{id} на неизвестном идентифик",
+              "0.14 docs: В smoke-scenarios.md нет описания, откуд",
+              "0.11 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.09 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 176,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "research",
+          "llm_latency_ms": 191,
+          "final": "research",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "eval-13",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "review",
+            "status": "UNSURE",
+            "confidence": 0.31207550466067296,
+            "reason": "ближайший пример непохож: 0.13 при пороге 0.25",
+            "neighbours": [
+              "0.13 testing: Проверь, что тесты остаются зелёными под",
+              "0.10 docs: CLAUDE.md описывает слой storage не так,",
+              "0.09 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.09 review: Стоит ли принимать этот патч: он тянет в",
+              "0.06 review: Насколько плохо, что я вынес декодирован"
+            ],
+            "latency_us": 499,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 204,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "review"
+        },
+        {
+          "id": "eval-14",
+          "group": "correct",
+          "known_class": "review",
+          "micro": {
+            "class": "docs",
+            "status": "UNSURE",
+            "confidence": 0.3514471790233629,
+            "reason": "ближайший пример непохож: 0.22 при пороге 0.25",
+            "neighbours": [
+              "0.22 research: Что в internal/storage не покрыто тестам",
+              "0.15 docs: CLAUDE.md описывает слой storage не так,",
+              "0.13 review: Глянь диф рефакторинга маппинга ошибок, ",
+              "0.09 docs: Опиши в README, какие переменные окружен",
+              "0.08 review: Проверь, соответствует ли новый хендлер "
+            ],
+            "latency_us": 686,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 200,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "docs"
+        },
+        {
+          "id": "eval-15",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.45501926250320474,
+            "reason": "ближайший пример непохож: 0.23 при пороге 0.25",
+            "neighbours": [
+              "0.23 bug-fix: Фильтр списка по подстроке чувствителен ",
+              "0.19 testing: Нужен тест, который ловит регресс по рег",
+              "0.17 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.17 contract-change: Список заметок должен отдаваться объекто",
+              "0.12 research: Почему на пустом тексте возвращается 400"
+            ],
+            "latency_us": 864,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 192,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "eval-16",
+          "group": "correct",
+          "known_class": "testing",
+          "micro": {
+            "class": "research",
+            "status": "UNSURE",
+            "confidence": 0.260923771090271,
+            "reason": "ближайший пример непохож: 0.21 при пороге 0.25",
+            "neighbours": [
+              "0.21 research: Что происходит при удалении заметки, кот",
+              "0.18 testing: Прогони smoke-сценарии из docs/smoke-sce",
+              "0.17 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.12 docs: В smoke-scenarios.md нет описания, откуд",
+              "0.12 bug-fix: GET /notes на пустом хранилище возвращае"
+            ],
+            "latency_us": 907,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 190,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "research"
+        },
+        {
+          "id": "border-01",
+          "group": "borderline",
+          "micro": {
+            "class": "contract-change",
+            "status": "OK",
+            "confidence": 0.7604286419415536,
+            "neighbours": [
+              "0.31 contract-change: Добавить в GET /notes параметр q для фил",
+              "0.20 contract-change: Список заметок должен отдаваться объекто",
+              "0.18 contract-change: Service.Create должен принимать автора з",
+              "0.13 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.09 feature: Добавить в лог причину отказа при валида"
+            ],
+            "latency_us": 870,
+            "calls": 0
+          },
+          "fallback": false,
+          "final": "contract-change",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-02",
+          "group": "borderline",
+          "micro": {
+            "class": "contract-change",
+            "status": "OK",
+            "confidence": 0.6229795518480484,
+            "neighbours": [
+              "0.28 contract-change: Service.Create должен принимать автора з",
+              "0.20 testing: Service.UpdateText не покрыт тестами",
+              "0.18 contract-change: Переименовать в JSON-ответе поле text в ",
+              "0.18 research: Зачем в Service интерфейс Clock и кто ег",
+              "0.16 contract-change: Добавить в GET /notes параметр q для фил"
+            ],
+            "latency_us": 580,
+            "calls": 0
+          },
+          "fallback": false,
+          "final": "contract-change",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-03",
+          "group": "borderline",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.2938723219886329,
+            "reason": "ближайший пример непохож: 0.20 при пороге 0.25",
+            "neighbours": [
+              "0.20 testing: Service.UpdateText не покрыт тестами",
+              "0.19 review: Вот две генерации теста на UpdateText, g",
+              "0.11 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.10 research: Объясни, почему фильтрация по подстроке ",
+              "0.10 bug-fix: При обновлении текста перезаписывается C"
+            ],
+            "latency_us": 731,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "testing",
+          "llm_latency_ms": 223,
+          "final": "testing",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "border-04",
+          "group": "borderline",
+          "micro": {
+            "class": "docs",
+            "status": "OK",
+            "confidence": 0.7381074447766613,
+            "neighbours": [
+              "0.33 docs: Опиши в README, какие переменные окружен",
+              "0.23 docs: Напиши в README раздел о том, как добавл",
+              "0.14 docs: CLAUDE.md описывает слой storage не так,",
+              "0.13 review: Отревьюй диф, который добавил фильтрацию",
+              "0.12 research: Объясни, почему фильтрация по подстроке "
+            ],
+            "latency_us": 820,
+            "calls": 0
+          },
+          "fallback": false,
+          "final": "docs",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "border-05",
+          "group": "borderline",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.3964894340619686,
+            "reason": "ближайший пример непохож: 0.15 при пороге 0.25",
+            "neighbours": [
+              "0.15 testing: Добавь table-driven тест на маппинг доме",
+              "0.13 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.11 contract-change: Список заметок должен отдаваться объекто",
+              "0.10 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.09 research: Почему на пустом тексте возвращается 400"
+            ],
+            "latency_us": 514,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 202,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "border-06",
+          "group": "borderline",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.6669478315261588,
+            "reason": "ближайший пример непохож: 0.25 при пороге 0.25",
+            "neighbours": [
+              "0.25 refactor: В internal/httpapi/handler.go сопоставле",
+              "0.15 refactor: Переименуй переменную n в хендлерах во ч",
+              "0.13 review: Проверь, соответствует ли новый хендлер ",
+              "0.13 refactor: Собери формирование JSON-ответа в один в",
+              "0.13 review: Насколько плохо, что я вынес декодирован"
+            ],
+            "latency_us": 835,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 235,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "border-07",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "UNSURE",
+            "confidence": 0.3006388841368107,
+            "reason": "ближайший пример непохож: 0.17 при пороге 0.25",
+            "neighbours": [
+              "0.17 feature: Добавить в лог причину отказа при валида",
+              "0.13 review: Стоит ли принимать этот патч: он тянет в",
+              "0.10 bug-fix: Валидация длины срабатывает не на той гр",
+              "0.09 refactor: Собери формирование JSON-ответа в один в",
+              "0.08 testing: Покрытие internal/note семь процентов, н"
+            ],
+            "latency_us": 751,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "refactor",
+          "llm_latency_ms": 204,
+          "final": "refactor",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "feature"
+        },
+        {
+          "id": "border-08",
+          "group": "borderline",
+          "micro": {
+            "class": "feature",
+            "status": "OK",
+            "confidence": 0.7314443619690069,
+            "neighbours": [
+              "0.35 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.17 feature: Нет эндпоинта количества заметок",
+              "0.14 feature: Нужен эндпоинт, который отдаёт время ста",
+              "0.13 research: Что происходит при удалении заметки, кот",
+              "0.12 docs: Напиши в README раздел о том, как добавл"
+            ],
+            "latency_us": 844,
+            "calls": 0
+          },
+          "fallback": false,
+          "final": "feature",
+          "decided_by": "micro",
+          "correct": false
+        },
+        {
+          "id": "noisy-01",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "UNSURE",
+            "confidence": 0,
+            "reason": "вход не дал ни одного известного признака",
+            "latency_us": 1,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 191,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-02",
+          "group": "noisy",
+          "micro": {
+            "class": "",
+            "status": "UNSURE",
+            "confidence": 0,
+            "reason": "вход не дал ни одного известного признака",
+            "latency_us": 1,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 200,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false
+        },
+        {
+          "id": "noisy-03",
+          "group": "noisy",
+          "micro": {
+            "class": "refactor",
+            "status": "UNSURE",
+            "confidence": 0.5711247717754403,
+            "reason": "соседи разошлись: 0.57 голосов при пороге 0.60",
+            "neighbours": [
+              "0.28 refactor: Порт и таймаут чтения заголовков зашиты ",
+              "0.06 feature: Добавь эндпоинт /notes/recent, отдающий ",
+              "0.06 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.05 bug-fix: GET /notes/{id} на неизвестном идентифик",
+              "0.04 contract-change: Добавить в GET /notes параметр q для фил"
+            ],
+            "latency_us": 189,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 201,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "refactor"
+        },
+        {
+          "id": "noisy-04",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.22840111365487417,
+            "reason": "ближайший пример непохож: 0.09 при пороге 0.25",
+            "neighbours": [
+              "0.09 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.08 contract-change: Убрать из ответа поле created_at, фронте",
+              "0.08 refactor: Приведи порядок объявлений в note.go к т",
+              "0.07 testing: Прогони smoke-сценарии из docs/smoke-sce",
+              "0.07 feature: Добавить в лог причину отказа при валида"
+            ],
+            "latency_us": 652,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "feature",
+          "llm_latency_ms": 189,
+          "final": "feature",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-05",
+          "group": "noisy",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.4579160157295572,
+            "reason": "соседи разошлись: 0.46 голосов при пороге 0.60",
+            "neighbours": [
+              "0.56 testing: Service.UpdateText не покрыт тестами",
+              "0.55 bug-fix: Service.UpdateText не обрезает пробелы п",
+              "0.11 review: Вот две генерации теста на UpdateText, g",
+              "0.10 bug-fix: При обновлении текста перезаписывается C",
+              "0.10 contract-change: Service.Create должен принимать автора з"
+            ],
+            "latency_us": 412,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 205,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": false,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-06",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.360516691851174,
+            "reason": "ближайший пример непохож: 0.15 при пороге 0.25",
+            "neighbours": [
+              "0.15 docs: В README-project.md нет описания API",
+              "0.10 review: Стоит ли принимать этот патч: он тянет в",
+              "0.10 bug-fix: При обновлении текста перезаписывается C",
+              "0.09 bug-fix: GET /notes/{id} на неизвестном идентифик",
+              "0.09 research: Что происходит при удалении заметки, кот"
+            ],
+            "latency_us": 680,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-07",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.44992953776104483,
+            "reason": "соседи разошлись: 0.45 голосов при пороге 0.60",
+            "neighbours": [
+              "0.29 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.21 research: Что в internal/storage не покрыто тестам",
+              "0.14 docs: CLAUDE.md описывает слой storage не так,",
+              "0.11 contract-change: Добавить в GET /notes параметр q для фил",
+              "0.09 bug-fix: GET /notes/{id} на неизвестном идентифик"
+            ],
+            "latency_us": 537,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 204,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        },
+        {
+          "id": "noisy-08",
+          "group": "noisy",
+          "known_class": "bug-fix",
+          "micro": {
+            "class": "bug-fix",
+            "status": "UNSURE",
+            "confidence": 0.38691079831113095,
+            "reason": "соседи разошлись: 0.39 голосов при пороге 0.60",
+            "neighbours": [
+              "0.46 bug-fix: GET /notes на пустом хранилище возвращае",
+              "0.29 contract-change: Список заметок должен отдаваться объекто",
+              "0.17 research: Почему на пустом тексте возвращается 400",
+              "0.16 research: Объясни, почему фильтрация по подстроке ",
+              "0.12 refactor: Приведи порядок объявлений в note.go к т"
+            ],
+            "latency_us": 466,
+            "calls": 0
+          },
+          "fallback": true,
+          "llm_class": "bug-fix",
+          "llm_latency_ms": 235,
+          "final": "bug-fix",
+          "decided_by": "llm",
+          "correct": true,
+          "micro_was": "bug-fix"
+        }
+      ],
+      "totals": {
+        "входов": 32,
+        "входов с известным ответом": 19,
+        "вызовов большой модели": 28,
+        "задержка llm суммарно мс": 5783,
+        "задержка micro суммарно мс": 20.016,
+        "обработал micro": 4,
+        "средняя задержка llm мс": 180.71875,
+        "средняя задержка micro мс": 0.6255,
+        "средняя задержка на вход мс": 181.34425,
+        "точность llm на переданных": 0.631578947368421,
+        "точность общая": 0.631578947368421,
+        "ушло в fallback": 28,
+        "ушло наверх (с известным ответом)": 19,
+        "эскалаций, где micro был бы прав": 8
+      }
+    }
+  ]
+}
