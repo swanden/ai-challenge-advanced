@@ -1,0 +1,185 @@
+{
+  "task": "binary",
+  "model": "mlx-community/Qwen2.5-7B-Instruct-4bit",
+  "adapter": "week-2/finetune/adapters/binary-100",
+  "note": "срез на 100 итерациях, binary",
+  "accuracy": 0.875,
+  "format_compliance": 1.0,
+  "elapsed_s": 3.9,
+  "by_expected": {
+    "no": {
+      "correct": 13,
+      "total": 14
+    },
+    "yes": {
+      "correct": 1,
+      "total": 2
+    }
+  },
+  "predicted_distribution": {
+    "no": 14,
+    "yes": 2
+  },
+  "results": [
+    {
+      "index": 1,
+      "user": "Хендлер удаления отвечает StatusOK вместо StatusNoContent, хотя в описании API стоит 204",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 302
+    },
+    {
+      "index": 2,
+      "user": "Сервер не дожидается активных запросов при остановке, graceful shutdown завершает процесс сразу",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 237
+    },
+    {
+      "index": 3,
+      "user": "Отдавать на создание заметки 201 и заголовок Location вместо нынешнего 200",
+      "expected": "yes",
+      "raw": "no",
+      "predicted": "no",
+      "correct": false,
+      "well_formed": true,
+      "latency_ms": 237
+    },
+    {
+      "index": 4,
+      "user": "Перенести создание заметки с POST /notes на POST /api/v1/notes, старый путь убрать",
+      "expected": "yes",
+      "raw": "yes",
+      "predicted": "yes",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 250
+    },
+    {
+      "index": 5,
+      "user": "Список правил в CLAUDE.md не упоминает эндпоинты, добавленные задачами T-07, T-08, T-09",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 240
+    },
+    {
+      "index": 6,
+      "user": "Перенеси в README таблицу кодов ответов, сейчас их приходится искать по коду",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 244
+    },
+    {
+      "index": 7,
+      "user": "Добавить флаг -addr, чтобы адрес прослушивания задавался при запуске, а не константой",
+      "expected": "no",
+      "raw": "yes",
+      "predicted": "yes",
+      "correct": false,
+      "well_formed": true,
+      "latency_ms": 240
+    },
+    {
+      "index": 8,
+      "user": "Сделай ограничение размера тела запроса, чтобы гигабайтный JSON не читался в память целиком",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 240
+    },
+    {
+      "index": 9,
+      "user": "Разбор тела запроса в хендлерах создания и обновления дублируется",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 239
+    },
+    {
+      "index": 10,
+      "user": "В storage/memory.go мьютекс берётся и на чтение, и на запись — переведи на RWMutex, поведение прежнее",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 239
+    },
+    {
+      "index": 11,
+      "user": "Где формируется JSON ответа списка и кто решает порядок элементов?",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 242
+    },
+    {
+      "index": 12,
+      "user": "Разберись, откуда берётся идентификатор заметки и возможна ли коллизия",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 248
+    },
+    {
+      "index": 13,
+      "user": "Посмотри мой патч по graceful shutdown, что здесь не так?",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 238
+    },
+    {
+      "index": 14,
+      "user": "Прочитай изменения в storage и скажи, не появилась ли гонка",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 237
+    },
+    {
+      "index": 15,
+      "user": "Нет теста на регрессию по T-01: пустой список должен быть [], а не null",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 242
+    },
+    {
+      "index": 16,
+      "user": "Сценария на пустое состояние после удаления всех заметок нет в smoke-наборе, добавь",
+      "expected": "no",
+      "raw": "no",
+      "predicted": "no",
+      "correct": true,
+      "well_formed": true,
+      "latency_ms": 238
+    }
+  ]
+}

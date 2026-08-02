@@ -1,0 +1,25 @@
+/Users/den/projects/ai-challenge-advanced/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Loading pretrained model
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 6896.01it/s]
+Loading datasets
+Training
+Trainable parameters: 0.076% (5.767M/7615.617M)
+Starting training..., iters: 75
+Calculating loss...:   0%|          | 0/10 [00:00<?, ?it/s]Calculating loss...:  10%|█         | 1/10 [00:00<00:02,  4.26it/s]Calculating loss...:  20%|██        | 2/10 [00:00<00:01,  5.12it/s]Calculating loss...:  30%|███       | 3/10 [00:00<00:01,  5.47it/s]Calculating loss...:  40%|████      | 4/10 [00:00<00:01,  5.66it/s]Calculating loss...:  50%|█████     | 5/10 [00:00<00:00,  5.34it/s]Calculating loss...:  60%|██████    | 6/10 [00:01<00:00,  5.54it/s]Calculating loss...:  70%|███████   | 7/10 [00:01<00:00,  5.67it/s]Calculating loss...:  80%|████████  | 8/10 [00:01<00:00,  5.76it/s]Calculating loss...:  90%|█████████ | 9/10 [00:01<00:00,  5.82it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.87it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.61it/s]
+Iter 1: Val loss 4.311, Val took 1.785s
+Iter 10: Train loss 2.791, Learning Rate 1.000e-05, It/sec 4.250, Tokens/sec 464.108, Trained Tokens 1092, Peak mem 5.222 GB
+Iter 20: Train loss 0.991, Learning Rate 1.000e-05, It/sec 4.209, Tokens/sec 469.772, Trained Tokens 2208, Peak mem 5.391 GB
+Calculating loss...:   0%|          | 0/10 [00:00<?, ?it/s]Calculating loss...:  10%|█         | 1/10 [00:00<00:01,  5.95it/s]Calculating loss...:  20%|██        | 2/10 [00:00<00:01,  5.97it/s]Calculating loss...:  30%|███       | 3/10 [00:00<00:01,  5.98it/s]Calculating loss...:  40%|████      | 4/10 [00:00<00:01,  5.98it/s]Calculating loss...:  50%|█████     | 5/10 [00:00<00:00,  5.98it/s]Calculating loss...:  60%|██████    | 6/10 [00:01<00:00,  5.99it/s]Calculating loss...:  70%|███████   | 7/10 [00:01<00:00,  5.99it/s]Calculating loss...:  80%|████████  | 8/10 [00:01<00:00,  5.58it/s]Calculating loss...:  90%|█████████ | 9/10 [00:01<00:00,  5.70it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.78it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.85it/s]
+Iter 25: Val loss 0.714, Val took 1.713s
+Iter 30: Train loss 0.823, Learning Rate 1.000e-05, It/sec 4.252, Tokens/sec 466.849, Trained Tokens 3306, Peak mem 5.391 GB
+Iter 40: Train loss 0.683, Learning Rate 1.000e-05, It/sec 4.224, Tokens/sec 459.578, Trained Tokens 4394, Peak mem 5.391 GB
+Calculating loss...:   0%|          | 0/10 [00:00<?, ?it/s]Calculating loss...:  10%|█         | 1/10 [00:00<00:01,  5.96it/s]Calculating loss...:  20%|██        | 2/10 [00:00<00:01,  5.98it/s]Calculating loss...:  30%|███       | 3/10 [00:00<00:01,  5.98it/s]Calculating loss...:  40%|████      | 4/10 [00:00<00:01,  5.48it/s]Calculating loss...:  50%|█████     | 5/10 [00:00<00:00,  5.60it/s]Calculating loss...:  60%|██████    | 6/10 [00:01<00:00,  5.62it/s]Calculating loss...:  70%|███████   | 7/10 [00:01<00:00,  5.65it/s]Calculating loss...:  80%|████████  | 8/10 [00:01<00:00,  5.70it/s]Calculating loss...:  90%|█████████ | 9/10 [00:01<00:00,  5.77it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.79it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.74it/s]
+Iter 50: Val loss 0.626, Val took 1.746s
+Iter 50: Train loss 0.643, Learning Rate 1.000e-05, It/sec 4.220, Tokens/sec 460.862, Trained Tokens 5486, Peak mem 5.391 GB
+Iter 60: Train loss 0.454, Learning Rate 1.000e-05, It/sec 4.291, Tokens/sec 468.146, Trained Tokens 6577, Peak mem 5.391 GB
+Iter 70: Train loss 0.406, Learning Rate 1.000e-05, It/sec 4.168, Tokens/sec 453.902, Trained Tokens 7666, Peak mem 5.391 GB
+Calculating loss...:   0%|          | 0/10 [00:00<?, ?it/s]Calculating loss...:  10%|█         | 1/10 [00:00<00:01,  5.57it/s]Calculating loss...:  20%|██        | 2/10 [00:00<00:01,  5.54it/s]Calculating loss...:  30%|███       | 3/10 [00:00<00:01,  5.52it/s]Calculating loss...:  40%|████      | 4/10 [00:00<00:01,  5.50it/s]Calculating loss...:  50%|█████     | 5/10 [00:00<00:00,  5.49it/s]Calculating loss...:  60%|██████    | 6/10 [00:01<00:00,  5.49it/s]Calculating loss...:  70%|███████   | 7/10 [00:01<00:00,  5.48it/s]Calculating loss...:  80%|████████  | 8/10 [00:01<00:00,  5.47it/s]Calculating loss...:  90%|█████████ | 9/10 [00:01<00:00,  5.09it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.19it/s]Calculating loss...: 100%|██████████| 10/10 [00:01<00:00,  5.35it/s]
+Iter 75: Val loss 0.633, Val took 1.871s
+Iter 75: Train loss 0.547, Learning Rate 1.000e-05, It/sec 8.100, Tokens/sec 456.855, Trained Tokens 8230, Peak mem 5.391 GB
+Saved final weights to week-2/finetune/adapters/full/adapters.safetensors.
