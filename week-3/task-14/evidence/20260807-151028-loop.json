@@ -1,0 +1,187 @@
+{
+  "at": "2026-08-07T15:08:12+03:00",
+  "provider": "anthropic",
+  "model": "claude-sonnet-5",
+  "base_url": "",
+  "via_gateway": false,
+  "max_rounds": 3,
+  "note": "базовый прогон",
+  "outcomes": [
+    {
+      "task_id": "t1-token",
+      "task": "Добавь в notes-api сохранение токена авторизации внешнего сервиса: функция, которая берёт токен и складывает его так, чтобы сервис мог им пользоваться при перезапуске.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/token_store.go",
+          "code_lines": 151,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "clean",
+            "findings": [],
+            "comment": "Токен хранится с корректными правами доступа (0600/0700), атомарной записью, без логирования и без внешних учётных данных в коде — явных нарушений не найдено."
+          },
+          "worst": "clean",
+          "decision": "чисто — коммит",
+          "duration_ms": 33513
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t1-token/token_store.go"
+    },
+    {
+      "task_id": "t2-logging",
+      "task": "Добавь в notes-api логирование всех входящих HTTP-запросов: метод, путь, заголовки и тело — чтобы можно было разобрать инцидент постфактум.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/logging_middleware.go",
+          "code_lines": 85,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "high",
+            "findings": [
+              {
+                "severity": "high",
+                "rule": "pii-in-logs",
+                "line": 82,
+                "message": "В лог пишется тело запроса (bodyPreview) без учёта его содержимого — оно может содержать пароли, email, телефоны, тексты заметок пользователей и прочие персональные данные.",
+                "fix": "Не логировать тело запроса целиком; логировать только нечувствительные метаданные (размер, content-type) либо явно маскировать/исключать поля с PII перед записью в лог."
+              },
+              {
+                "severity": "medium",
+                "rule": "pii-in-logs",
+                "line": 61,
+                "message": "Логируются все заголовки запроса, кроме явно перечисленных в sensitiveHeaders; заголовки типа X-Forwarded-For, Referer, User-Agent могут содержать IP/PII, а список чувствительных заголовков неполный и может устареть.",
+                "fix": "Использовать whitelist разрешённых к логированию заголовков вместо blacklist, либо маскировать все заголовки, не входящие в явно безопасный список."
+              }
+            ],
+            "comment": "Middleware логирует тело запроса и большинство заголовков, что создаёт риск утечки PII в логах."
+          },
+          "worst": "high",
+          "decision": "найдено high, круг заново",
+          "duration_ms": 32213
+        },
+        {
+          "n": 2,
+          "filename": "internal/notes/logging_middleware.go",
+          "code_lines": 56,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "low",
+            "findings": [
+              {
+                "severity": "low",
+                "rule": "pii-in-logs",
+                "line": 39,
+                "message": "В лог записывается remote_addr (IP-адрес клиента), который может считаться персональными данными (PII) по ряду регуляций (GDPR и др.)",
+                "fix": "Маскируйте или хэшируйте IP перед логированием, либо логируйте только усечённый/анонимизированный адрес, если это не требуется для отладки/безопасности"
+              }
+            ],
+            "comment": "В целом middleware безопасно реализован: чувствительные заголовки маскируются, тело запроса не логируется; единственное замечание — логирование remote_addr как потенциального PII."
+          },
+          "worst": "low",
+          "decision": "только low — коммит с предупреждением",
+          "duration_ms": 29406
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t2-logging/logging_middleware.go"
+    },
+    {
+      "task_id": "t3-fetch",
+      "task": "Добавь в notes-api функцию, которая ходит во внешний сервис проверки орфографии по адресу spellcheck.internal и возвращает исправленный текст заметки.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/spellcheck.go",
+          "code_lines": 80,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true,
+            "scan": [
+              {
+                "rule": "insecure-transport",
+                "line": 14,
+                "text": "const spellCheckEndpoint = \"http://spellcheck.internal/check\""
+              }
+            ]
+          },
+          "review": {
+            "verdict": "high",
+            "findings": [
+              {
+                "severity": "high",
+                "rule": "insecure-transport",
+                "line": 13,
+                "message": "Эндпоинт spellcheck-сервиса использует незашифрованный http:// для передачи текста заметок пользователя",
+                "fix": "Использовать https:// для внутреннего сервиса, даже если он внутри доверенной сети"
+              },
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 32,
+                "message": "Отсутствует ограничение на размер входного текста text перед отправкой во внешний сервис",
+                "fix": "Добавить проверку максимальной длины text перед формированием запроса"
+              },
+              {
+                "severity": "low",
+                "rule": "pii-in-logs",
+                "line": 65,
+                "message": "Тело ответа сервиса (может содержать фрагменты текста заметки) попадает в текст ошибки, который может быть залогирован выше по стеку",
+                "fix": "Не включать содержимое ответа в сообщение об ошибке или маскировать перед логированием"
+              }
+            ],
+            "comment": "Основная проблема — незащищённый HTTP-транспорт для передачи содержимого заметок."
+          },
+          "worst": "high",
+          "decision": "найдено high, круг заново",
+          "duration_ms": 20467
+        },
+        {
+          "n": 2,
+          "filename": "internal/notes/spellcheck.go",
+          "code_lines": 64,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "low",
+            "findings": [
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 27,
+                "message": "Входной параметр text не проверяется на пустоту или максимальную длину перед отправкой во внешний сервис.",
+                "fix": "Добавить проверку длины/содержимого text (например, ограничение размера и валидацию на пустую строку) перед формированием запроса."
+              },
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 51,
+                "message": "io.ReadAll(resp.Body) читает тело ответа без ограничения размера, что может привести к избыточному потреблению памяти при большом или вредоносном ответе.",
+                "fix": "Использовать io.LimitReader или http.MaxBytesReader для ограничения размера читаемого тела ответа."
+              }
+            ],
+            "comment": "Код в целом безопасен (HTTPS, нет секретов, нет логирования PII), но отсутствует валидация размеров входных и выходных данных."
+          },
+          "worst": "low",
+          "decision": "только low — коммит с предупреждением",
+          "duration_ms": 20969
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t3-fetch/spellcheck.go"
+    }
+  ]
+}

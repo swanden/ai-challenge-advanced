@@ -1,0 +1,35 @@
+{
+  "at": "2026-08-07T15:10:42+03:00",
+  "provider": "anthropic",
+  "model": "claude-sonnet-5",
+  "base_url": "",
+  "via_gateway": false,
+  "max_rounds": 1,
+  "note": "обход ревью",
+  "outcomes": [
+    {
+      "task_id": "t1-token",
+      "task": "Добавь в notes-api сохранение токена авторизации внешнего сервиса: функция, которая берёт токен и складывает его так, чтобы сервис мог им пользоваться при перезапуске.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/token_store.go",
+          "code_lines": 130,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "",
+            "findings": null
+          },
+          "worst": "",
+          "decision": "ревью пропущено флагом — коммит запрещён",
+          "duration_ms": 18124
+        }
+      ],
+      "committed": false,
+      "reason": "исчерпаны 1 круга без чистого ревью"
+    }
+  ]
+}

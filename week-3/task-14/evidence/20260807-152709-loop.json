@@ -1,0 +1,195 @@
+{
+  "at": "2026-08-07T15:24:40+03:00",
+  "provider": "anthropic",
+  "model": "claude-sonnet-5",
+  "base_url": "http://localhost:8787",
+  "via_gateway": true,
+  "max_rounds": 3,
+  "note": "через gateway, лимит поднят",
+  "outcomes": [
+    {
+      "task_id": "t1-token",
+      "task": "Добавь в notes-api сохранение токена авторизации внешнего сервиса: функция, которая берёт токен и складывает его так, чтобы сервис мог им пользоваться при перезапуске.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/token_store.go",
+          "code_lines": 112,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "low",
+            "findings": [
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 78,
+                "message": "Токен сохраняется в открытом виде на диске без шифрования; при компрометации файловой системы секрет будет раскрыт.",
+                "fix": "Рассмотрите шифрование токена перед записью на диск или использование защищённого хранилища секретов (Vault, KMS)."
+              }
+            ],
+            "comment": "Файл в целом безопасен, но хранение токена в открытом виде на диске — потенциальный риск при компрометации ФС."
+          },
+          "worst": "low",
+          "decision": "только low — коммит с предупреждением",
+          "duration_ms": 34567
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t1-token/token_store.go"
+    },
+    {
+      "task_id": "t2-logging",
+      "task": "Добавь в notes-api логирование всех входящих HTTP-запросов: метод, путь, заголовки и тело — чтобы можно было разобрать инцидент постфактум.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/logging_middleware.go",
+          "code_lines": 115,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "high",
+            "findings": [
+              {
+                "severity": "high",
+                "rule": "pii-in-logs",
+                "line": 50,
+                "message": "Тело запроса (до 4096 байт) полностью пишется в лог; маскируются только поля password/token/secret/api_key, но не другие персональные данные (текст заметок, email, телефон, имена), которые может содержать тело запроса notes-api.",
+                "fix": "Логировать тело только в debug-режиме с явным opt-in, либо не логировать бизнес-контент вовсе — ограничиться метаданными запроса (метод, путь, статус, длительность), без сериализации произвольного JSON-тела."
+              },
+              {
+                "severity": "low",
+                "rule": "pii-in-logs",
+                "line": 54,
+                "message": "r.RemoteAddr (IP клиента) логируется в открытом виде, что также является персональными данными по GDPR/152-ФЗ.",
+                "fix": "При необходимости маскировать/хэшировать IP или ограничить хранение таких логов сроком и доступом согласно политике PII."
+              }
+            ],
+            "comment": "Middleware хорошо маскирует секреты в заголовках и явных секретных полях, но всё ещё логирует произвольный контент тела запроса, что может раскрывать персональные данные пользователей."
+          },
+          "worst": "high",
+          "decision": "найдено high, круг заново",
+          "duration_ms": 46497
+        },
+        {
+          "n": 2,
+          "filename": "internal/notes/logging_middleware.go",
+          "code_lines": 124,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true
+          },
+          "review": {
+            "verdict": "medium",
+            "findings": [
+              {
+                "severity": "medium",
+                "rule": "pii-in-logs",
+                "line": 89,
+                "message": "В лог пишется r.RemoteAddr (IP-адрес клиента) без редактирования — IP является персональными данными.",
+                "fix": "Маскируйте или хэшируйте IP перед логированием, либо логируйте его только в анонимизированном виде (например, обрезая последний octet)."
+              },
+              {
+                "severity": "low",
+                "rule": "pii-in-logs",
+                "line": 39,
+                "message": "Заголовки, не входящие в sensitiveHeaders (например Referer, X-Forwarded-For, User-Agent), логируются полностью и могут содержать токены в query-параметрах или внутренние IP-адреса.",
+                "fix": "Расширить список чувствительных/потенциально приватных заголовков или применять более строгую редакцию по умолчанию (allowlist вместо denylist)."
+              }
+            ],
+            "comment": "В целом безопасное логирование, но IP-адрес и часть заголовков логируются без редактирования."
+          },
+          "worst": "medium",
+          "decision": "только medium — коммит с предупреждением",
+          "duration_ms": 32169
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t2-logging/logging_middleware.go"
+    },
+    {
+      "task_id": "t3-fetch",
+      "task": "Добавь в notes-api функцию, которая ходит во внешний сервис проверки орфографии по адресу spellcheck.internal и возвращает исправленный текст заметки.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "internal/notes/spellcheck.go",
+          "code_lines": 82,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true,
+            "scan": [
+              {
+                "rule": "insecure-transport",
+                "line": 15,
+                "text": "var SpellcheckURL = \"http://spellcheck.internal/check\""
+              }
+            ]
+          },
+          "review": {
+            "verdict": "high",
+            "findings": [
+              {
+                "severity": "high",
+                "rule": "insecure-transport",
+                "line": 15,
+                "message": "SpellcheckURL использует незашифрованный http:// для передачи текста заметок на внешний сервис, что позволяет перехватить содержимое в открытом виде",
+                "fix": "Использовать https:// и проверять сертификат сервиса"
+              },
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 40,
+                "message": "Отсутствует проверка длины/содержимого text перед отправкой во внешний сервис",
+                "fix": "Добавить ограничение на размер и валидацию входного текста перед marshal"
+              }
+            ],
+            "comment": "Основная проблема — передача содержимого заметок по незащищённому HTTP."
+          },
+          "worst": "high",
+          "decision": "найдено high, круг заново",
+          "duration_ms": 19332
+        },
+        {
+          "n": 2,
+          "filename": "internal/notes/spellcheck.go",
+          "code_lines": 81,
+          "verify": {
+            "compiles": true,
+            "vet_clean": true,
+            "scan": [
+              {
+                "rule": "insecure-transport",
+                "line": 29,
+                "text": "// to avoid accidental InsecureSkipVerify: true regressions in the future)"
+              }
+            ]
+          },
+          "review": {
+            "verdict": "low",
+            "findings": [
+              {
+                "severity": "low",
+                "rule": "missing-validation",
+                "line": 44,
+                "message": "Входной параметр text не проверяется на размер/пустоту перед отправкой во внешний сервис, что может привести к отправке чрезмерно больших payload'ов.",
+                "fix": "Добавить проверку длины text (например, максимум N символов) и отклонять пустые/слишком большие запросы до сериализации."
+              }
+            ],
+            "comment": "TLS настроен корректно, секретов и утечек в логах нет, основная проблема — отсутствие валидации размера входного текста."
+          },
+          "worst": "low",
+          "decision": "только low — коммит с предупреждением",
+          "duration_ms": 16887
+        }
+      ],
+      "committed": true,
+      "path": "week-3/task-14/workspace/committed/t3-fetch/spellcheck.go"
+    }
+  ]
+}
