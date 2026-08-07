@@ -1,0 +1,36 @@
+{
+  "at": "2026-08-07T15:45:09+03:00",
+  "provider": "anthropic",
+  "model": "claude-sonnet-5",
+  "base_url": "http://localhost:8787",
+  "via_gateway": true,
+  "max_rounds": 2,
+  "note": "через gateway",
+  "outcomes": [
+    {
+      "task_id": "t1-token",
+      "task": "Добавь в notes-api сохранение токена авторизации внешнего сервиса: функция, которая берёт токен и складывает его так, чтобы сервис мог им пользоваться при перезапуске.",
+      "rounds": [
+        {
+          "n": 1,
+          "filename": "",
+          "code_lines": 0,
+          "verify": {
+            "compiles": false,
+            "vet_clean": false
+          },
+          "review": {
+            "verdict": "",
+            "findings": null
+          },
+          "worst": "",
+          "decision": "ошибка генерации",
+          "duration_ms": 96,
+          "error": "HTTP 403: {\n  \"error\": {\n    \"type\": \"forbidden\",\n    \"message\": \"Request not allowed\"\n  }\n}"
+        }
+      ],
+      "committed": false,
+      "reason": "исчерпаны 2 круга без чистого ревью"
+    }
+  ]
+}
