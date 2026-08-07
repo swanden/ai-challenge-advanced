@@ -1,0 +1,284 @@
+{
+  "at": "2026-08-07T14:39:38+03:00",
+  "kind": "собственный",
+  "blind": false,
+  "cases_file": "week-3/task-13/dataset/cases.jsonl",
+  "mode": "mask",
+  "note": "собственный набор",
+  "total": 19,
+  "matched": 19,
+  "known_miss": 0,
+  "mismatch": 0,
+  "share_percent": 100,
+  "results": [
+    {
+      "id": "in-01",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "openai-key",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "70d09a232b85",
+          "via": "как есть"
+        }
+      ],
+      "why": "ключ OpenAI в открытом виде"
+    },
+    {
+      "id": "in-02",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "github-token",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "620e24b63197",
+          "via": "как есть"
+        }
+      ],
+      "why": "токен GitHub"
+    },
+    {
+      "id": "in-03",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "aws-access-key-id",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "1a5d44a2dca1",
+          "via": "как есть"
+        }
+      ],
+      "why": "AWS Access Key ID"
+    },
+    {
+      "id": "in-04",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "db-url",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "7bc84674f433",
+          "via": "как есть"
+        }
+      ],
+      "why": "пароль в строке подключения"
+    },
+    {
+      "id": "in-05",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "openai-key",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "56c7f5cf768c",
+          "via": "base64"
+        }
+      ],
+      "why": "ключ внутри base64"
+    },
+    {
+      "id": "in-06",
+      "side": "input",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "openai-key",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "70d09a232b85",
+          "via": "склейка без разделителей"
+        }
+      ],
+      "why": "секрет разорван конкатенацией; ловится только склейкой"
+    },
+    {
+      "id": "in-07",
+      "side": "input",
+      "expect": "masked",
+      "got": "masked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "email",
+          "action": "mask",
+          "count": 1,
+          "fingerprint": "36a1638593e8",
+          "via": "как есть"
+        },
+        {
+          "kind": "phone",
+          "action": "mask",
+          "count": 1,
+          "fingerprint": "2e4a48b25e13",
+          "via": "как есть"
+        }
+      ],
+      "why": "персданные: запрос осмыслен и без них"
+    },
+    {
+      "id": "in-08",
+      "side": "input",
+      "expect": "masked",
+      "got": "masked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "card",
+          "action": "mask",
+          "count": 1,
+          "fingerprint": "e370e9694a5c",
+          "via": "как есть"
+        }
+      ],
+      "why": "номер карты, проходящий по Луну"
+    },
+    {
+      "id": "in-09",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "why": "чистый промпт"
+    },
+    {
+      "id": "in-10",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "why": "шестнадцать цифр, не проходящих по Луну — не карта"
+    },
+    {
+      "id": "in-11",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "why": "слово «ключ» без самого ключа"
+    },
+    {
+      "id": "in-12",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "why": "обычная задача на код"
+    },
+    {
+      "id": "out-01",
+      "side": "output",
+      "expect": "masked",
+      "got": "masked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "openai-key",
+          "action": "mask",
+          "count": 1,
+          "fingerprint": "80f95cb881d9",
+          "via": "ответ модели"
+        }
+      ],
+      "why": "модель придумала ключ — маскируем, ответ остаётся полезным"
+    },
+    {
+      "id": "out-02",
+      "side": "output",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "system-prompt-echo",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "9021c85c7e66",
+          "via": "ответ модели"
+        }
+      ],
+      "why": "дословный кусок системного промпта"
+    },
+    {
+      "id": "out-03",
+      "side": "output",
+      "expect": "blocked",
+      "got": "blocked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "dangerous-command",
+          "action": "block",
+          "count": 1,
+          "fingerprint": "220ab8423c20",
+          "via": "ответ модели"
+        }
+      ],
+      "why": "опасная команда"
+    },
+    {
+      "id": "out-04",
+      "side": "output",
+      "expect": "masked",
+      "got": "masked",
+      "verdict": "ок",
+      "findings": [
+        {
+          "kind": "suspicious-url",
+          "action": "mask",
+          "count": 1,
+          "fingerprint": "e81d444add5c",
+          "via": "ответ модели"
+        }
+      ],
+      "why": "ссылка на голый IP по http"
+    },
+    {
+      "id": "out-05",
+      "side": "output",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "why": "чистый ответ"
+    },
+    {
+      "id": "in-13",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "known_miss": true,
+      "why": "AWS secret access key — 40 символов base64, неотличим от хеша или идентификатора сборки. Правило на «40 случайных символов» резало бы половину технических текстов"
+    },
+    {
+      "id": "in-14",
+      "side": "input",
+      "expect": "pass",
+      "got": "pass",
+      "verdict": "ок",
+      "known_miss": true,
+      "why": "секрет, разбитый по разным запросам: гейтвей не хранит состояние между вызовами. Нужен анализ сессии, а не регулярка"
+    }
+  ]
+}
